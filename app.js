@@ -7,7 +7,7 @@ const flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var multer = require('multer');
-var upload = multer();
+const upload = multer()
 
 const hbs = require("hbs");
 
@@ -27,7 +27,6 @@ hbs.registerPartials(partialpath);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
-app.use(upload.array()); 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
@@ -45,6 +44,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
+  console.log(err)
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

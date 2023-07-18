@@ -26,8 +26,9 @@ db.sequelize = sequelize
 db.products = require("./productModel")(sequelize, DataTypes)
 db.productStock = require("./productStockModel")(sequelize, DataTypes)
 db.user = require("./userModel")(sequelize, DataTypes)
-// db.store = require('./storeModel')(sequelize, DataTypes)
-db.storeProductMapping = require('./storeProductMappingModel')(sequelize, DataTypes)
+db.store = require('./storeModel')(sequelize, DataTypes)
+db.productRaise = require('./productRaiseModel')(sequelize, DataTypes)
+db.stock = require('./stockModel')(sequelize, DataTypes)
 
 db.sequelize.sync({ force: false })
    .then(() => {
