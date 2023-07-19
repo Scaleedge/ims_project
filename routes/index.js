@@ -3,12 +3,12 @@ var router = express.Router();
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
 const storeController = require("../controllers/storeController")
-const stockController = require("../controllers/stockController")
+const productStockController = require('../controllers/productStockController')
+const stockInOutController = require("../controllers/stockInOutController")
 const productRaise  = require('../controllers/productRaiseController');
 const db = require("../models");
 const Store = db.store
 const Product = db.products
-const Stock = db.stock
 var multer = require('multer');
 const upload = multer( { dest: 'public/' } )
 
@@ -66,6 +66,20 @@ router.get('/product', checkUser, function(req, res) {
 
 router.post('/createProduct', upload.single('imageUrl'), productController.createProduct )
 
+
+// Product Stock Api
+
+router.post('/addProductStock',productStockController.addProductStock)
+
+// store master api
+
+router.get('/storeMaster', checkUser, function(req, res) {
+  res.render('storeMaster', { title: 'Express' , message: req.flash('message')});
+});
+
+router.post("/createStore", storeController.createStore);
+
+
 // product raise Api 
 
 router.get('/productRaise', checkUser, async function(req, res) {
@@ -79,24 +93,18 @@ router.get('/productRaise', checkUser, async function(req, res) {
 
 router.post('/productRaise' , productRaise.addProductRaise)
 
-// store master api
 
-router.get('/storeMaster', checkUser, function(req, res) {
-  res.render('storeMaster', { title: 'Express' , message: req.flash('message')});
-});
-
-router.post("/createStore", storeController.createStore);
 
 // stock In/Out api
 
-router.get('/stock', checkUser, async function(req, res) {
+router.get('/stockInOut', checkUser, async function(req, res) {
   const store = await Store.findAll()
   const product = await Product.findAll()
   // console.log(product,store)  
-  res.render('stock', { title: 'Express' , message: req.flash('message'), store , product});
+  res.render('stockInOut', { title: 'Express' , message: req.flash('message'), store , product});
 });
 
-router.post('/stocks', stockController.stockInOut)
+router.post('/stockInOut', stockInOutController.stockInOut)
 
 
 

@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
             type : DataTypes.STRING(255)
         },
         freeQty : {
-            type : DataTypes.STRING(100)
+            type : DataTypes.INTEGER
         },
         purchasePrice : {
             type : DataTypes.STRING(150)
@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         others : {
             type : DataTypes.TEXT,
-            allowNull: false,
+            // allowNull: false,
         },
         recommended : {
             type : DataTypes.STRING(20)

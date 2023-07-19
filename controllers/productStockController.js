@@ -1,4 +1,4 @@
-const db = require("../models")
+const db = require ("../models")
 const Product = db.products
 const ProductStock = db.productStock
 
@@ -7,7 +7,7 @@ const ProductStock = db.productStock
 const addProductStock = async (req, res) => {
     try {
         const addedProduct = await Product.findOne({ where: { id: req.body.itemId } })
-
+      
         if (!addedProduct) {
             return res.status(200).json({
                 status: false,
@@ -57,8 +57,8 @@ const addProductStock = async (req, res) => {
             aliasCode: req.body.aliasCode,
         }
         const productStock = await ProductStock.create(info)
-        res.status(200).send({
-            message: "product created sucessfully",
+        return res.status(200).send({
+            message: "product added sucessfully",
             productStock
         })
     }
