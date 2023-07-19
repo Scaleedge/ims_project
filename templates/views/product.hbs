@@ -9,10 +9,13 @@
 
 <body id="body-pd">
     {{>side}}
-    <form action="/createProduct" method="post" />
+    <form action="/createProduct" method="post" enctype="multipart/form-data" />
     <section id="general">
         <div class="height-100 bg-light">
             <h3 class="pt-4">Add Category</h3>
+              {{#if message}}
+            <div class="alert alert-info">{{message}}</div>
+            {{/if}}
             <div class="col-md-12 main-table-data container mt-4 border">
                 <div class="col-md-12 subtitle">
                     <h5><a href="#general" onclick="showSection('general')">General</a></h5>
@@ -24,48 +27,55 @@
                     <div class="col-md-6 textarea-container-first pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Item Name</label>
-                            <textarea id="form17" name="itemName" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="itemName" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
 
-                         {{!-- <div class="md-form mb-4  active-pink-textarea-2">
+                         {{ <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Store</label>
-                            <select name="storeId"  class="md-textarea form-control" >
+                            <select name="storeId" class="md-textarea form-control">
                                 <option>Select Store</option>
                                 {{#each store}}
-                                    <option value="{{id}}"> {{ storeName }} </option>
+                                <option value="{{id}}"> {{ storeName }} </option>
                                 {{/each}}
-                            </select> --}}
-
-                        {{!-- </div> --}}
+                            </select> }}
+                        {{</div>}}
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Short Name</label>
-                            <textarea id="form17"  name="shortName" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="shortName" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Food Type</label>
-                            <textarea id="form17" name="foodType" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="foodType" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Item Product Type</label>
-                            <textarea id="form17" name="itemProductType" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="itemProductType" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                     </div>
                     <div class="col-md-6 textarea-container-second pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Image URL</label>
-                            <textarea id="form17" name="imageUrl" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <input id="form17" type="file" name="imageUrl" class="md-textarea form-control" rows="2"
+                                cols="5" />
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Status</label>
-                            <textarea id="form17" name="status" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="status" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Manufacturer</label>
-                            <textarea id="form17"  name="manufacturer" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="manufacturer" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Description</label>
-                            <textarea id="form17" name="description" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="description" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         {{!-- <div class="col-md-12 button-container">
                             <button class="button-34" onclick="showSection('sale')">Next</button>
@@ -90,15 +100,18 @@
                     <div class="col-md-6 textarea-container-first pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Length</label>
-                            <textarea id="form17" name="length" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="length" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Breadth</label>
-                            <textarea id="form17" name="breadth" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="breadth" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Height</label>
-                            <textarea id="form17" name="height" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="height" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         {{!-- <div class="col-md-12 button-container">
                             <button class="button-34" onclick="showSection('general')">Previous</button>
@@ -107,15 +120,18 @@
                     <div class="col-md-6 textarea-container-second pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Weight</label>
-                            <textarea id="form17" name="weight" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="weight" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Width</label>
-                            <textarea id="form17" name="width" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="width" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Decimal Allowed</label>
-                            <textarea id="form17" name="decimalsAllowed" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="decimalsAllowed" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         {{!-- <div class="col-md-12 button-container">
                             <button class="button-34" onclick="showSection('text')">Next</button>
@@ -140,19 +156,23 @@
                     <div class="col-md-6 textarea-container-first pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Tax Id</label>
-                            <textarea id="form17" name="taxId" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="taxId" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Item Text Type</label>
-                            <textarea id="form17" name="itemTaxType" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="itemTaxType" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Item Product Text Type</label>
-                            <textarea id="form17" name="itemProductTaxType" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="itemProductTaxType" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Fulfillment Mode</label>
-                            <textarea id="form17" name="fulfilmentMode" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="fulfilmentMode" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         {{!-- <div class="col-md-12 button-container">
                             <button class="button-34" onclick="showSection('sale')">Previous</button>
@@ -161,15 +181,18 @@
                     <div class="col-md-6 textarea-container-second pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Is Returnable</label>
-                            <textarea id="form17" name="isReturnable" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="isReturnable" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Is Cancellable</label>
-                            <textarea id="form17" name="isCancellable" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="isCancellable" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Return Period</label>
-                            <textarea id="form17" name="returnPeriod" class="md-textarea form-control" rows="2" cols="5"></textarea>
+                            <textarea id="form17" name="returnPeriod" class="md-textarea form-control" rows="2"
+                                cols="5"></textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2 mb-5" style="padding-bottom: 32px">
                             <label for="form17" class="formlabel"></label>
@@ -229,12 +252,12 @@
                     </div>
                 </div>
     </section>
-</form>
+    </form>
     <script>
         function showSection(section) {
             const sections = ['general', 'sale', 'text', 'packaging'];
 
-            sections.forEach(function(sec) {
+            sections.forEach(function (sec) {
                 document.getElementById(sec).style.display = 'none';
             });
 
