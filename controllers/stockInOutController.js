@@ -30,7 +30,6 @@ const stockInOut = async (req, res) => {
 
             const addproductStock = await ProductStock.update( { freeQty : productStock.freeQty + 1 }, {where : {itemId : req.body.itemId}} )
             
-
         }
 
         const removeProductStock = await ProductStock.update({ freeQty : productStock.freeQty - 1 }, {where : {itemId : req.body.itemId}})

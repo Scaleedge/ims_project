@@ -28,7 +28,7 @@ db.productStock = require("./productStockModel")(sequelize, DataTypes)
 db.user = require("./userModel")(sequelize, DataTypes)
 db.store = require('./storeModel')(sequelize, DataTypes)
 db.productRaise = require('./productRaiseModel')(sequelize, DataTypes)
-db.stock = require('./stockModel')(sequelize, DataTypes)
+db.stockInOut = require('./stockInOutModel')(sequelize, DataTypes)
 
 db.sequelize.sync({ force: false })
    .then(() => {
