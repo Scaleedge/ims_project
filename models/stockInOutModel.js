@@ -3,7 +3,7 @@ const { sequelize, user } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
     
-    const StockInOut = sequelize.define('stock_in_out', {
+    const StockInOut = sequelize.define('stock_ledger', {
         id: {
             type: DataTypes.BIGINT(20),
             allowNull: false,
