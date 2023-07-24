@@ -9,26 +9,26 @@
 
 <body id="body-pd">
     {{>side}}
-    <form action="/createStore" method="post">
+    <form action="/addCategory" method="post">
         <section>
             <div class="height-100 bg-light">
                 {{#if message}}
                 <div class="alert alert-info">{{message}}</div>
                 {{/if}}
-                <h3 class="pt-4">Add Store</h3>
+                <h3 class="pt-4">Add Category</h3>
                 <div class="col-md-12 main-table-data container mt-4 border">
                     <div class="handler-container col-md-12">
                         <div class="col-md-6 textarea-container-first pt-4">
                             <div class="md-form mb-4  active-pink-textarea-2">
-                                <label for="form17" class="formlabel">Store Name</label>
-                                <textarea id="form17" name="storeName" class="md-textarea form-control" rows="2"
+                                <label for="form17" class="formlabel">Short Description</label>
+                                <textarea id="form17" name="shortDescription" class="md-textarea form-control" rows="2"
                                     cols="5"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6 textarea-container-second pt-4">
                             <div class="md-form mb-4  active-pink-textarea-2">
-                                <label for="form17" class="formlabel">Store Address</label>
-                                <textarea id="form17" name="storeAddress" class="md-textarea form-control" rows="2"
+                                <label for="form17" class="formlabel">Long Description</label>
+                                <textarea id="form17" name="longDescription" class="md-textarea form-control" rows="2"
                                     cols="5"></textarea>
                             </div>
                         </div>

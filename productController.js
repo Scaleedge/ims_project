@@ -55,6 +55,7 @@ const createProduct = async (req, res) => {
         }
 
         const product = await Product.create(info)
+        res.send(product)
         req.flash('message', 'Product Sucessfully Created.');
         return res.redirect('/product')
     }
@@ -62,7 +63,7 @@ const createProduct = async (req, res) => {
         console.log(err)
         res.status(500).send({
             success: false,
-            message: "something went wrong"
+            message: err.message
         })
     }
 }
@@ -70,14 +71,8 @@ const createProduct = async (req, res) => {
 
 // Get All Product Details
 const getAllProduct = async (req, res) => {
-     const page = req.query.page ? req.query.page : 1
-     const size = req.query.size ? req.query.size : 3 
-    const products = await Product.findAndCountAll({
-        limit : size,
-        offset : (page - 1) * size 
-    })
-   
-    return res.status(200).send({
+    const products = await Product.findAll()
+    res.status(200).send({
         success: true,
         products
     })

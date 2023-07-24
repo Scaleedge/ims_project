@@ -5,12 +5,17 @@ const productController = require("../controllers/productController");
 const storeController = require("../controllers/storeController")
 const productStockController = require('../controllers/productStockController')
 const stockInOutController = require("../controllers/stockInOutController")
+const manufacturerController = require("../controllers/manufacturerController")
+const categoryController = require("../controllers/categoryMasterController")
 const productRaise  = require('../controllers/productRaiseController');
+const checkUser = require("../middleware/checkUser")
 const db = require("../models");
 const Store = db.store
 const Product = db.products
 var multer = require('multer');
 const upload = multer( { dest: 'public/' } )
+
+
 
 // Login User Api
 
@@ -22,6 +27,9 @@ router.get('/', function(req, res) {
 
 router.post("/login", userController.loginUser);
 
+
+
+
 // logout Api
 
 router.get('/logout', function(req, res) {
@@ -29,6 +37,8 @@ router.get('/logout', function(req, res) {
   req.flash('message', 'You are Sucessfully Logout.');
   res.redirect('/');
 });
+
+
 
 
 // Register User Api
@@ -40,14 +50,8 @@ router.get('/register', function(req, res) {
 router.post("/register", userController.registerUser);
 
 
-let checkUser = (req, res, next) => {
-  if( req.session.isLoggedIn) {
-    next()
-  } else {
-    req.flash('message', 'Please login first');
-    res.redirect('/')
-  }
-}
+
+
 
 // Dashboard Api
 
@@ -56,7 +60,13 @@ router.get('/dashboard', checkUser, function(req, res) {
 });
 
 
-// Product Api
+// Product Listing Api
+
+router.get('/getAllProduct', productController.getAllProduct);
+
+
+
+// Create Product Api
 
 router.get('/product', checkUser, function(req, res) {
   // const store = await Store.findAll()
@@ -67,9 +77,14 @@ router.get('/product', checkUser, function(req, res) {
 router.post('/createProduct', upload.single('imageUrl'), productController.createProduct )
 
 
+
+
 // Product Stock Api
 
 router.post('/addProductStock',productStockController.addProductStock)
+
+
+
 
 // store master api
 
@@ -78,6 +93,8 @@ router.get('/storeMaster', checkUser, function(req, res) {
 });
 
 router.post("/createStore", storeController.createStore);
+
+
 
 
 // product raise Api 
@@ -95,6 +112,7 @@ router.post('/productRaise' , productRaise.addProductRaise)
 
 
 
+
 // stock In/Out api
 
 router.get('/stockInOut', checkUser, async function(req, res) {
@@ -106,6 +124,25 @@ router.get('/stockInOut', checkUser, async function(req, res) {
 
 router.post('/stockInOut', stockInOutController.stockInOut)
 
+
+
+// Manufacturer  Master Api
+
+router.get('/manufacturer', checkUser, function(req, res) {
+  res.render('manufacturer', { title: 'Express' , message: req.flash('message')});
+});
+
+router.post('/addManufacturer', manufacturerController.addManufacturer)
+
+
+
+// Category Master Api
+
+router.get('/category', checkUser, function(req, res) {
+  res.render('category', { title: 'Express' , message: req.flash('message')});
+});
+
+router.post('/addcategory', categoryController.addCategory)
 
 
 module.exports = router;

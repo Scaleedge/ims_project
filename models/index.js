@@ -29,6 +29,8 @@ db.user = require("./userModel")(sequelize, DataTypes)
 db.store = require('./storeModel')(sequelize, DataTypes)
 db.productRaise = require('./productRaiseModel')(sequelize, DataTypes)
 db.stockInOut = require('./stockInOutModel')(sequelize, DataTypes)
+db.manufacturer = require('./manufacturerMasterModel')(sequelize, DataTypes)
+db.category = require('./categoryMasterModel')(sequelize, DataTypes)
 
 db.sequelize.sync({ force: false })
    .then(() => {
