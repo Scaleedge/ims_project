@@ -12,8 +12,7 @@ const addManufacturer = async (req, res) => {
         } = req.body
 
         const manufacturer = await Manufacturer.create(info)
-    
-        console.log(manufacturer)
+
         req.flash('message', 'Manufacturer added sucessfully');
         return res.redirect('/manufacturer')
 

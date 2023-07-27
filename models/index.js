@@ -31,6 +31,7 @@ db.productRaise = require('./productRaiseModel')(sequelize, DataTypes)
 db.stockInOut = require('./stockInOutModel')(sequelize, DataTypes)
 db.manufacturer = require('./manufacturerMasterModel')(sequelize, DataTypes)
 db.category = require('./categoryMasterModel')(sequelize, DataTypes)
+db.productCategoryMapping = require('./productCategoryMappingModel')(sequelize, DataTypes)
 
 db.sequelize.sync({ force: false })
    .then(() => {
