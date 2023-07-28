@@ -13,10 +13,12 @@
     <section id="general">
         <div class="height-100 bg-light">
             <h3 class="pt-4">Add Category</h3>
-              {{#if message}}
+            {{#if message}}
             <div class="alert alert-info">{{message}}</div>
             {{/if}}
+
             <div class="col-md-12 main-table-data container mt-4 border">
+                <h3 class="pt-4">Add Product Details</h3>
                 <div class="col-md-12 subtitle">
                     <h5><a href="#general" onclick="showSection('general')">General</a></h5>
                     <h5><a href="#sale" onclick="showSection('sale')">Sales</a></h5>
@@ -31,7 +33,7 @@
                                 cols="5"></textarea>
                         </div>
 
-                         {{!-- {{ <div class="md-form mb-4  active-pink-textarea-2">
+                        {{!-- {{ <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Store</label>
                             <select name="storeId" class="md-textarea form-control">
                                 <option>Select Store</option>
@@ -39,7 +41,8 @@
                                 <option value="{{id}}"> {{ storeName }} </option>
                                 {{/each}}
                             </select> }}
-                        {{</div>}} --}}
+                            {{
+                        </div>}} --}}
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Short Name</label>
                             <textarea id="form17" name="shortName" class="md-textarea form-control" rows="2"
@@ -69,8 +72,12 @@
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Manufacturer</label>
-                            <textarea id="form17" name="manufacturer" class="md-textarea form-control" rows="2"
-                                cols="5"></textarea>
+                            <select id="form17" name="id" class="form-control">
+                                <option>Select Manufacturer</option>
+                                {{#each manufacturer}}
+                                <option value="{{id}}"> {{ shortDescription }} </option>
+                                {{/each}}
+                            </select>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Description</label>
@@ -90,6 +97,7 @@
         <div class="height-100 bg-light">
             <h3 class="pt-4">Add Category</h3>
             <div class="col-md-12 main-table-data container mt-4 border">
+                <h3 class="pt-4">Add Product Details</h3>
                 <div class="col-md-12 subtitle">
                     <h5><a href="#general" onclick="showSection('general')">General</a></h5>
                     <h5><a href="#sale" onclick="showSection('sale')">Sales</a></h5>
@@ -146,6 +154,7 @@
         <div class="height-100 bg-light">
             <h3 class="pt-4">Add Category</h3>
             <div class="col-md-12 main-table-data container mt-4 border">
+                <h3 class="pt-4">Add Product Details</h3>
                 <div class="col-md-12 subtitle">
                     <h5><a href="#general" onclick="showSection('general')">General</a></h5>
                     <h5><a href="#sale" onclick="showSection('sale')">Sales</a></h5>
@@ -209,6 +218,7 @@
         <div class="height-100 bg-light">
             <h3 class="pt-4">Add Category</h3>
             <div class="col-md-12 main-table-data container mt-4 border">
+                <h3 class="pt-4">Add Product Details</h3>
                 <div class="col-md-12 subtitle">
                     <h5><a href="#general" onclick="showSection('general')">General</a></h5>
                     <h5><a href="#sale" onclick="showSection('sale')">Sales</a></h5>
