@@ -17,6 +17,7 @@ const Store = db.store
 const Product = db.products
 const Manufacturer = db.manufacturer
 const Category = db.category
+const ProductStock = db.productStock
 let multer = require('multer');
 const database = require('../config/database');
 const upload = multer({ dest: 'public/' })
@@ -83,8 +84,55 @@ router.get('/productList', checkUser, async function (req, res) {
   res.render('productList', { title: 'Express', message: req.flash('message')});
 });
 
-router.get('/productList', checkUser, async function (req, res) {
-  
+router.get('/productsList', checkUser, async function (req, res) {
+ 
+  let draw = req.query.draw;
+
+  let start = parseInt(req.query.start);
+
+  let length = parseInt(req.query.length);
+
+  let where = {}
+
+
+  if (req.query.search.value) {
+    console.log(req.query.search)
+    where[Op.or] = [
+      { shortDescription: { [Op.like]: `%${req.query.search.value}%` } },
+      { longDescription: { [Op.like]: `%${req.query.search.value}%` } },
+    ];
+  }
+
+  const productStock = await ProductStock.findAll({
+    limit: length,
+    offset: start,
+    where: where
+  })
+  console.log(productStock)
+  const count = await ProductStock.count()
+  console.log(count)
+
+  let data_arr = []
+  for (let i = 0; i <productStock.length; i++) {
+    data_arr.push({
+      'itemId': productStock[i].itemId,
+      'outletId': productStock[i].outletId,
+      'stock': productStock[i].stock,
+      'price': productStock[i].salePrice,
+      'mrp': productStock[i].mrp,
+      'cat1': productStock[i].cat1,
+      'cat2': productStock[i].cat2
+    });
+  }
+  console.log(data_arr)
+  let output = {
+    'draw': draw,
+    'iTotalRecords': count,
+    'iTotalDisplayRecords': count,
+    'aaData': data_arr
+  };
+
+  res.json(output)
 });
 
 router.post('/createProduct', upload.single('imageUrl'), productController.createProduct)
@@ -221,8 +269,8 @@ router.get('/manufacturerMasterList',  async function (req, res) {
   }
 
   const manufacturer = await Manufacturer.findAll({
-    limit: 2,
-    offset: 0,
+    limit: length,
+    offset: start,
     where: where
   })
   console.log(manufacturer)
@@ -281,8 +329,8 @@ console.log(123)
   }
 
   const category = await Category.findAll({
-    limit: 2,
-    offset: 0,
+    limit: length,
+    offset: start,
     where: where
   })
   console.log(category)

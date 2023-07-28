@@ -20,7 +20,7 @@ const stockInOut = async (req, res) => {
        
 
         if(!productStock) {
-            res.status(500).send({
+            return res.status(500).send({
                 success: false,
                 message: "ProductStock is not found"
             })
