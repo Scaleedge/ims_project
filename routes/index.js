@@ -24,6 +24,18 @@ const upload = multer({ dest: 'public/' })
 
 
 
+// Register User Api
+
+router.get('/register', function (req, res) {
+  res.render('register', { title: 'Express' });
+});
+
+router.post("/register", userController.registerUser);
+
+
+
+
+
 // Login User Api
 
 router.get('/', function (req, res) {
@@ -48,17 +60,6 @@ router.get('/logout', function (req, res) {
 
 
 
-// Register User Api
-
-router.get('/register', function (req, res) {
-  res.render('register', { title: 'Express' });
-});
-
-router.post("/register", userController.registerUser);
-
-
-
-
 
 // Dashboard Api
 
@@ -67,9 +68,6 @@ router.get('/dashboard', checkUser, function (req, res) {
 });
 
 
-// Product Listing Api
-
-router.get('/getAllProduct', productController.getAllProduct);
 
 
 
@@ -79,6 +77,12 @@ router.get('/product', checkUser, async function (req, res) {
   const manufacturer = await Manufacturer.findAll()
   res.render('product', { title: 'Express', message: req.flash('message'), manufacturer });
 });
+
+router.post('/createProduct', upload.single('imageUrl'), productController.createProduct)
+
+
+
+// Product Listing Api
 
 router.get('/productList', checkUser, async function (req, res) {
   res.render('productList', { title: 'Express', message: req.flash('message')});
@@ -135,14 +139,14 @@ router.get('/productsList', checkUser, async function (req, res) {
   res.json(output)
 });
 
-router.post('/createProduct', upload.single('imageUrl'), productController.createProduct)
-
 
 
 
 // Product Stock Api
 
 router.post('/addProductStock', productStockController.addProductStock)
+
+
 
 
 // Product Category Mapping
@@ -152,7 +156,7 @@ router.post('/productCategoryMapping', productCategoryMapping.productCategoryMap
 
 
 
-// store master api
+// Store Master Api
 
 router.get('/storeMaster', checkUser, function (req, res) {
   res.render('storeMaster', { title: 'Express', message: req.flash('message') });
@@ -160,7 +164,10 @@ router.get('/storeMaster', checkUser, function (req, res) {
 
 router.post("/createStore", storeController.createStore);
 
-// store list api
+
+
+
+// Store List Api
 
 router.get('/storeList', checkUser, async function (req, res) {
   res.render('storeMasterList', { title: 'Express', message: req.flash('message') });   
@@ -210,7 +217,7 @@ router.get('/storemasterList',  async function (req, res) {
 
 
 
-// product raise Api 
+// Product Raise Api 
 
 router.get('/productRaise', checkUser, async function (req, res) {
   const store = await Store.findAll()
@@ -226,7 +233,7 @@ router.post('/productRaise', productRaise.addProductRaise)
 
 
 
-// stock In/Out api
+// Stock In/Out Api
 
 router.get('/stockInOut', checkUser, async function (req, res) {
   const store = await Store.findAll()
@@ -239,11 +246,19 @@ router.post('/stockInOut', stockInOutController.stockInOut)
 
 
 
-// Manufacturer  Master Api
+
+// Manufacturer Master Api
 
 router.get('/manufacturer', checkUser, function (req, res) {
   res.render('manufacturer', { title: 'Express', message: req.flash('message') });
 });
+
+router.post('/addManufacturer', manufacturerController.addManufacturer)
+
+
+
+
+// Manufacturer Listing Api
 
 router.get('/manufacturerList', checkUser, function (req, res) {
   res.render('manufacturerList', { title: 'Express', message: req.flash('message') });
@@ -295,8 +310,6 @@ router.get('/manufacturerMasterList',  async function (req, res) {
   res.json(output)
 })
 
-router.post('/addManufacturer', manufacturerController.addManufacturer)
-
 
 
 // Category Master Api
@@ -305,12 +318,19 @@ router.get('/category', checkUser, function (req, res) {
   res.render('category', { title: 'Express', message: req.flash('message') });
 });
 
+router.post('/addcategory', categoryController.addCategory)
+
+
+
+
+// Category Listing Api
+
 router.get('/categoryList', checkUser, function (req, res) {
   res.render('categoryList', { title: 'Express', message: req.flash('message') });
 });
 
 router.get('/categoryMasterList',  async function (req, res) {
-console.log(123)
+
   let draw = req.query.draw;
 
   let start = parseInt(req.query.start);
@@ -355,7 +375,8 @@ console.log(123)
   res.json(output)
 })
 
-router.post('/addcategory', categoryController.addCategory)
+
+
 
 
 module.exports = router;
