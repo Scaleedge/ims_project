@@ -33,6 +33,13 @@ db.manufacturer = require('./manufacturerMasterModel')(sequelize, DataTypes)
 db.category = require('./categoryMasterModel')(sequelize, DataTypes)
 db.productCategoryMapping = require('./productCategoryMappingModel')(sequelize, DataTypes)
 
+// db.products.belongsTo(db.store, { sourceKey: "outletId", foreignKey: "outletId" });
+db.productStock.belongsTo(db.products, { sourceKey: "id", foreignKey: "itemId" });
+db.productStock.belongsTo(db.store, { sourceKey: "id", foreignKey: "outletId" });
+// db.products.hasOne(db.productStock, { sourceKey: "id", foreignKey: "itemId" });s
+
+
+
 db.sequelize.sync({ force: false })
    .then(() => {
       console.log("yes re-sync done")

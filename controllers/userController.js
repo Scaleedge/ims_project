@@ -3,7 +3,7 @@ const db = require("../models")
 const bcrypt = require("bcryptjs")
 // const config = require("../config/auth.config")
 const User = db.user
-var session = require('express-session');
+const session = require('express-session');
 
 // Register User
 

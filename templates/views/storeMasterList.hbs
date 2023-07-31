@@ -107,7 +107,7 @@
 <script>
     $(document).ready(function(){
 
-    var dataTable = $('#store_table').DataTable({
+    const dataTable = $('#store_table').DataTable({
     'processing' : true,
     'serverSide' : true,
     'serverMethod' : 'get',
@@ -116,9 +116,18 @@
     },
     'aaSorting' : [],
     'columns' : [
-    { data : 'outletId' },
+    { data : 'id' },
     { data : 'storeName' },
-    { data : 'storeAddress' }
+    { data : 'storeAddress' },
+    {
+               data: "id",
+            'render': function (data, type, row) {
+                    return "<a href='Admin/Categories/Edit/" + data + "'>EDIT</a>";
+               }
+            }
+
+
+
     ]
      
     });

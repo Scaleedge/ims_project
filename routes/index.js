@@ -99,36 +99,50 @@ router.get('/productsList', checkUser, async function (req, res) {
   let where = {}
 
 
-  if (req.query.search.value) {
-    console.log(req.query.search)
-    where[Op.or] = [
-      { shortDescription: { [Op.like]: `%${req.query.search.value}%` } },
-      { longDescription: { [Op.like]: `%${req.query.search.value}%` } },
-    ];
-  }
-
   const productStock = await ProductStock.findAll({
+    include: [ 
+      {
+        model: Product,
+        // attributes:['itemName']
+      },
+      {
+        model: Store,
+        // attributes:['storeName']
+      },
+
+    ],
     limit: length,
     offset: start,
     where: where
   })
   console.log(productStock)
-  const count = await ProductStock.count()
-  console.log(count)
+
+  if (req.query.search.value) {
+    where[Op.or] = [
+      { itemName: { [Op.like]: `%${req.query.search.value}%` } },
+      { storeName: { [Op.like]: `%${req.query.search.value}%` } },
+      { Cat1: { [Op.like]: `%${req.query.search.value}%` } },
+      { Cat2: { [Op.like]: `%${req.query.search.value}%` } },
+    ];
+  }
+
+  
+  const count = await Product.count()
+  
 
   let data_arr = []
   for (let i = 0; i <productStock.length; i++) {
     data_arr.push({
-      'itemId': productStock[i].itemId,
-      'outletId': productStock[i].outletId,
+      'itemName' : productStock[i].product.itemName,
+      'storeName': productStock[i].store_master.storeName,
       'stock': productStock[i].stock,
-      'price': productStock[i].salePrice,
+      'salePrice': productStock[i].salePrice,
       'mrp': productStock[i].mrp,
-      'cat1': productStock[i].cat1,
-      'cat2': productStock[i].cat2
+      'Cat1': productStock[i].Cat1,
+      'Cat2': productStock[i].Cat2
     });
   }
-  console.log(data_arr)
+  
   let output = {
     'draw': draw,
     'iTotalRecords': count,
@@ -150,6 +164,11 @@ router.post('/addProductStock', productStockController.addProductStock)
 
 
 // Product Category Mapping
+
+router.get('/productCategoryMapping', checkUser, async function (req, res) {
+  // const product = await Product.findAll()
+  res.render('productCategoryMapping', { title: 'Express', message: req.flash('message')});
+});
 
 router.post('/productCategoryMapping', productCategoryMapping.productCategoryMapping)
 
@@ -201,7 +220,7 @@ router.get('/storemasterList',  async function (req, res) {
   let data_arr = []
   for (let i = 0; i < store.length; i++) {
     data_arr.push({
-      'outletId': store[i].outletId,
+      'id': store[i].id,
       'storeName': store[i].storeName,
       'storeAddress': store[i].storeAddress
     });

@@ -4,7 +4,7 @@ const { sequelize, user } = require(".");
 module.exports = (sequelize, DataTypes) => {
     
     const Store = sequelize.define('store_master', {
-        outletId: {
+        id: {
             type: DataTypes.BIGINT(20),
             allowNull: false,
             primaryKey: true,

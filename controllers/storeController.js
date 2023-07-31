@@ -7,7 +7,6 @@ const createStore = async (req, res) => {
     try {
 
         let info = {
-            outletId,
             storeName,
             storeAddress
         } = req.body

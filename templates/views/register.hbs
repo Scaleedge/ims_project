@@ -123,11 +123,11 @@
 
 <script>
  function handleRegistration() {
-    var firstName = document.getElementById('first_name').value;
-    var lastName = document.getElementById('last_name').value;
-    var email = document.getElementById('email').value;
-    var mobile = document.getElementById('mobile').value;
-    var password = document.getElementById('password').value;
+    const firstName = document.getElementById('first_name').value;
+    const lastName = document.getElementById('last_name').value;
+    const email = document.getElementById('email').value;
+    const mobile = document.getElementById('mobile').value;
+    const password = document.getElementById('password').value;
 
     if (!firstName || !lastName || !email || !mobile || !password) {
       Swal.fire({
@@ -139,7 +139,7 @@
       });
       return false; 
     }
-    var passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\]:;<>,.?/~_+\-=|\\]).{8,32}$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\]:;<>,.?/~_+\-=|\\]).{8,32}$/;
     if (!passwordRegex.test(password)) {
       showAlert('Password should contain at least one letter, one number, and one special character.');
       return false;

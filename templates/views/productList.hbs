@@ -34,7 +34,8 @@
                             class="form-control border text-dark" placeholder="Search..."
                             style="border-radius: 20px 0 0 20px;" />
                     </div> --}}
-                    {{!-- <button id="search-button" type="submit" class="btn btn-dark" style="border-radius: 0 20px 20px 0;">
+                    {{!-- <button id="search-button" type="submit" class="btn btn-dark"
+                        style="border-radius: 0 20px 20px 0;">
                         <i class="fas fa-search "></i>
                     </button> --}}
                 </div>
@@ -50,8 +51,8 @@
                                 {{!-- <th scope="col"><i class="fa-regular fa-square-check"></i></th>
                                 <th scope="col"><input class="form-check-input border-2" type="checkbox" value=""
                                         id="flexCheckDefault"></th> --}}
-                                <th scope="col ">Product ID</th>
-                                <th scope="col ">Store ID</th>
+                                <th scope="col ">Product Name</th>
+                                <th scope="col ">Store</th>
                                 <th scope="col ">Stock</th>
                                 <th scope="col ">Price</th>
                                 <th scope="col ">MRP</th>
@@ -101,33 +102,40 @@
     </script>
     <script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-<script>
-    $(document).ready(function(){
+    <script>
+            $(document).ready(function(){
 
-    var dataTable = $('#product_table').DataTable({
-    'processing' : true,
-    'serverSide' : true,
-    'serverMethod' : 'get',
-    'ajax' : {
-    'url' : '/productsList'
+    const dataTable = $('#product_table').DataTable({
+                'processing' : true,
+            'serverSide' : true,
+            'serverMethod' : 'get',
+            'ajax' : {
+                'url' : '/productsList'
     },
-    'aaSorting' : [],
-    'columns' : [
-    { data : 'itemId' },
-    { data : 'outletId' },
-    { data : 'stock' },
-    { data : 'price' },
-    { data : 'mrp' },
-    { data : 'Cat1' },
-    { data : 'Cat2' }
-    ]
+            'aaSorting' : [],
+            'columns' : [
+            {data : 'itemName' },
+            {data : 'storeName' },
+            {data : 'stock' },
+            {data : 'salePrice' },
+            {data : 'mrp' },
+            {data : 'Cat1' },
+            {data : 'Cat2' },
+           {
+               data: "itemName",
+            'render': function (data, type, row) {
+                    return "<a href='Admin/Categories/Edit/" + data + "'>EDIT</a>";
+               }
+            }
+
+            ]
      
     });
 

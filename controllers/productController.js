@@ -1,21 +1,21 @@
 const db = require("../models")
 const Product = db.products
-var fs = require('fs');
+const fs = require('fs');
 
 // Create Product
 const createProduct = async (req, res) => {
 
     try {
         if (req.file) {
-            var tmp_path = req.file.path;
+            const tmp_path = req.file.path;
             req.body.newFileName = `${new Date().getTime()}_${req.file.originalname}`
             /** The original name of the uploaded file
                 stored in the variable "originalname". **/
-            var target_path = `public/uploads/${req.body.newFileName}`;
+            const target_path = `public/uploads/${req.body.newFileName}`;
 
             /** A better way to copy the uploaded file. **/
-            var src = fs.createReadStream(tmp_path);
-            var dest = fs.createWriteStream(target_path);
+            const src = fs.createReadStream(tmp_path);
+            const dest = fs.createWriteStream(target_path);
             src.pipe(dest);
             src.on('end', function () { });
             src.on('error', function (err) { });

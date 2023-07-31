@@ -1,19 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
 
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var multer = require('multer');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const multer = require('multer');
 const upload = multer()
 
 const hbs = require("hbs");
 
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 
-var app = express();
+const app = express();
 
 const staticpath = path.join(__dirname,);
 const templatespath = path.join(__dirname,"./templates/views");

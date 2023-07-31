@@ -30,17 +30,15 @@ const productCategoryMapping = async (req, res) => {
         const productAndCategory = await ProductCategoryMapping.create(info)
 
         console.log(productAndCategory)
-        return res.status(200).send({
-            message: "product and category added sucessfully",
-            productAndCategory
-        })
+        req.flash('message', 'Add Category into Product sucessfully');
+        return res.redirect('/productCategoryMapping')
     }
     catch (err) {
         res.status(500).send({
             success: false,
             message: "something went wrong"
         })
-        console.log(err)
+        console.log(err.message)
     }
 
 }
