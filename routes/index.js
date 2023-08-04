@@ -337,8 +337,19 @@ router.post('/productRaise', productRaise.addProductRaise)
 
 // Update Product Rate Api 
 
+router.get('/updateProductRaise/:id', checkUser, async function (req, res) {
+  console.log(123)
+console.log(req.params.itemId)
+  const store = await Store.findAll()
 
+  const product = await Product.findAll()
 
+  const productStock = await ProductStock.findOne({ where : { itemId :  req.params.id } })
+
+  res.render('productRaiseUpdate', { title: 'Express', message: req.flash('message'), store, product,productStock });
+});
+
+router.post('/productRaise', productRaise.updateProductRaise)
 
 
 

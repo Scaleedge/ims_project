@@ -65,7 +65,7 @@
                             <label for="form17" class="formlabel" i>Image URL</label>
                             <input id="form17" type="file" name="imageUrl" class="md-textarea form-control" rows="2"
                                 cols="5" />
-                                <img src="public/uploads/{{product.imageUrl}}" alt="">
+                            <img src="public/uploads/{{product.imageUrl}}" alt="">
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Status</label>
@@ -75,9 +75,10 @@
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Manufacturer</label>
                             <select id="form17" name="manufacturerId" class="form-control">
-                                <option>Select Manufacturer</option>
+                                <option>{{product.manufacturerId}}</option>
                                 {{#each manufacturer}}
-                                <option value="{{manufacturerId}}">{{ shortDescription }} </option>
+                                <option value="{{manufacturerId}}" {{#ifEquals manufacturerId product.manufacturerId}}
+                                    selected {{/ifEquals}}>{{ shortDescription }} </option>
                                 {{/each}}
                             </select>
                         </div>
@@ -231,15 +232,18 @@
                     <div class="col-md-6 textarea-container-first pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Box</label>
-                            <textarea id="form17" class="md-textarea form-control" rows="2" cols="5">{{product.box}}</textarea>
+                            <textarea id="form17" class="md-textarea form-control" rows="2"
+                                cols="5">{{product.box}}</textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Rack</label>
-                            <textarea id="form17" class="md-textarea form-control" rows="2" cols="5">{{product.rack}}</textarea>
+                            <textarea id="form17" class="md-textarea form-control" rows="2"
+                                cols="5">{{product.rack}}</textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">IBaru</label>
-                            <textarea id="form17" class="md-textarea form-control" rows="2" cols="5">{{product.iBaru}}</textarea>
+                            <textarea id="form17" class="md-textarea form-control" rows="2"
+                                cols="5">{{product.iBaru}}</textarea>
                         </div>
                         {{!-- <div class="col-md-12 button-container">
                             <button class="button-34" onclick="showSection('text')">Previous</button>
@@ -248,15 +252,18 @@
                     <div class="col-md-6 textarea-container-second pt-4">
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Weight Grams</label>
-                            <textarea id="form17" class="md-textarea form-control" rows="2" cols="5">{{product.weightGrams}}</textarea>
+                            <textarea id="form17" class="md-textarea form-control" rows="2"
+                                cols="5">{{product.weightGrams}}</textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Detailed Description</label>
-                            <textarea id="form17" class="md-textarea form-control" rows="2" cols="5">{{product.detailedDescription}}</textarea>
+                            <textarea id="form17" class="md-textarea form-control" rows="2"
+                                cols="5">{{product.detailedDescription}}</textarea>
                         </div>
                         <div class="md-form mb-4  active-pink-textarea-2">
                             <label for="form17" class="formlabel">Applied Online</label>
-                            <textarea id="form17" class="md-textarea form-control" rows="2" cols="5">{{product.appliesOnline}}</textarea>
+                            <textarea id="form17" class="md-textarea form-control" rows="2"
+                                cols="5">{{product.appliesOnline}}</textarea>
                         </div>
                         <div class="col-md-12 button-container">
                             <button class="button-34" role="button" type="submit">Submit</button>

@@ -15,10 +15,10 @@
     <div class="alert alert-info">{{message}}</div>
     {{/if}}
     <div class="col-md-12 main-table-data main-table-data-form container mt-4 border">
-      <form action="/productRaise" method="post" class="form-form">
+      <form action="/productRaiseUpdate/{{productStock.itemId}}" method="post" class="form-form">
         <div class="form-group py-2">
           <div class="col-md-12 title-title">
-                        <h3 class="pt-4">Product Raise</h3>
+                        <h3 class="pt-4">Update Product Raise</h3>
                     </div>
           <label for="exampleFormControlSelect1">Store</label>
           <select class="form-control  " name="outletId" id="exampleFormControlSelect1">
@@ -39,11 +39,11 @@
         </div>
         <div class="form-group py-2">
           <label for="exampleFormControlTextarea1">MRP</label>
-          <textarea class="form-control" name="mrp" id="exampleFormControlTextarea1" rows="2"></textarea>
+          <textarea class="form-control" name="mrp" id="exampleFormControlTextarea1" rows="2">{{productStock.mrp}}</textarea>
         </div>
         <div class="form-group py-2">
           <label for="exampleFormControlTextarea1">Price</label>
-          <textarea class="form-control" name="price" id="exampleFormControlTextarea1" rows="2"></textarea>
+          <textarea class="form-control" name="price" id="exampleFormControlTextarea1" rows="2">{{productStock.salePrice}}</textarea>
         </div>
         <div class="button-container">
           <button class="button-34" type="submit" role="button">Update</button>

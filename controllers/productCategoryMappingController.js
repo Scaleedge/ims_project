@@ -12,17 +12,16 @@ const productCategoryMapping = async (req, res) => {
         // const store = await Store.findOne({ where: { outletId: req.body.outletId } })
 
         // const product = await Product.findOne({ where: { itemId: req.body.itemId} })
-        const store = await ProductStock.findOne({ where: { outletId: req.body.outletId } })
-        const product = await ProductStock.findOne({ where: { itemId: req.body.itemId } })
+        const productStock = await ProductStock.findOne({ where: { itemId: req.body.itemId , outletId: req.body.outletId } })
+        
 
-        if (product, store) {
+        if (productStock) {
             const stockUpdated = await ProductStock.update({ Cat1: req.body.cat1, Cat2: req.body.cat2 }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
         }
-        else{
             console.log(123)
             const info = {
-                itemId : req.body.itemId,
-                outletId : req.body.outletId,
+                itemId,
+                outletId,
                 stock,
                 bufferStock,
                 supplierName,
@@ -66,7 +65,7 @@ const productCategoryMapping = async (req, res) => {
     
             console.log(addInProductStock)
             req.flash('message', 'Product added into productStock sucessfully');
-        }
+        
        
         return res.redirect('/productCategoryMapping')
     }

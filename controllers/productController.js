@@ -21,7 +21,6 @@ console.log(req.body.manufacturerId)
             src.on('end', function () { });
             src.on('error', function (err) { });
         }
-console.log(req.body.id)
         let info = {
             externalitemId: req.body.externalitemId,
             itemName: req.body.itemName,
@@ -59,7 +58,7 @@ console.log(req.body.id)
 
         const product = await Product.create(info)
         req.flash('message', 'Product Sucessfully Created.');
-        return res.redirect('/product')
+        return res.redirect('/productMasterList')
     }
     catch (err) {
         console.log(err.message)

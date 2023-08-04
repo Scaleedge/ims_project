@@ -25,17 +25,19 @@ const stockInOut = async (req, res) => {
                 message: "Store is not found in Product Stock"
             })
         }
+        const qty = parseInt(req.body.qty)
 
         const productStock = await ProductStock.findOne({ where: { itemid: req.body.itemId, outletId: req.body.outletId } })
-       
-            if (req.body.type = 'in') {
-              
-                const addproductStock = await ProductStock.update({ stock: productStock.stock + 1 }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
 
-            }
+        if (req.body.type == 'in') {
 
-            const removeProductStock = await ProductStock.update({ stock: productStock.stock - 1 }, { where: { itemId: req.body.itemId } })
+            const addproductStock = await ProductStock.update({ stock: productStock.stock + qty }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
 
+        } else if (req.body.type == 'out') {
+            
+            const removeProductStock = await ProductStock.update({ stock: productStock.stock - qty }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
+
+        }
 
         const info = {
             itemId: req.body.itemId,
