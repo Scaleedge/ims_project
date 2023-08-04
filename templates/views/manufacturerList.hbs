@@ -117,13 +117,13 @@
     },
     'aaSorting' : [],
     'columns' : [
-    { data : 'id' },
+    { data : 'manufacturerId' },
     { data : 'shortDescription' },
     { data : 'longDescription' },
-    {
-               data: "id",
+      {
+               data: "manufacturerId",
             'render': function (data, type, row) {
-                    return "<a href='Admin/Categories/Edit/" + data + "'>EDIT</a>";
+                    return "<a href='/updateManufacturer/" + data + "'>EDIT</a>";
                }
             }
     ]

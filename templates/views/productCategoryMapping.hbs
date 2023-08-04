@@ -15,39 +15,65 @@
                 {{#if message}}
                 <div class="alert alert-info">{{message}}</div>
                 {{/if}}
-                
+
                 <div class="col-md-12 main-table-data container mt-5 border" style="padding-top: 20px;">
                     <div class="col-md-12 title-title">
                         <h3 class="pt-4"> Product Category Mapping </h3>
                     </div>
-                    <div class="handler-container col-md-12">
-                        <div class="col-md-4 textarea-container-first pt-4">
+                    <div class="handler-container col-md-12 ">
+                        <div class="col-md-6 textarea-container-first pt-4">
                             <div class="md-form mb-4  active-pink-textarea-2">
-                                <label for="form17" class="formlabel">ProductId</label>
-                                {{!-- <select id="form17" name="id" class="form-control">
+                                <label for="form17" class="formlabel">Store</label>
+                                <select id="form17" name="outletId" class="form-control">
+                                    <option>Select Store</option>
+                                    {{#each store}}
+                                    <option value="{{outletId}}"> {{ storeName }} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 textarea-container-first pt-4">
+                            <div class="md-form mb-4  active-pink-textarea-2">
+                                <label for="form17" class="formlabel">Product</label>
+                                <select id="form17" name="itemId" class="form-control">
                                     <option>Select Product</option>
                                     {{#each product}}
-                                    <option value="{{id}}"> {{ itemName }} </option>
+                                    <option value="{{itemId}}"> {{ itemName }} </option>
                                     {{/each}}
-                                </select> --}}
-                                <textarea id="form17" name="itemId" class="md-textarea form-control" rows="2"
-                                    cols="5"></textarea>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-4 textarea-container-second pt-4">
+                    </div>
+                    <div class="handler-container col-md-12">
+                        <div class="col-md-6 textarea-container-second pt-4">
                             <div class="md-form mb-4  active-pink-textarea-2">
                                 <label for="form17" class="formlabel">Category 1</label>
-                                <textarea id="form17" name="cat1" class="md-textarea form-control" rows="2"
-                                    cols="5"></textarea>
+                                <select id="form17" name="cat1" class="form-control">
+                                    <option>Select Category</option>
+                                    {{#each category}}
+                                    <option value="{{shortDescription}}"> {{ shortDescription }} </option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
-                         <div class="col-md-4 textarea-container-second pt-4">
+
+                        <div class="col-md-6 textarea-container-second pt-4">
                             <div class="md-form mb-4  active-pink-textarea-2">
                                 <label for="form17" class="formlabel">Category 2</label>
-                                <textarea id="form17" name="cat2" class="md-textarea form-control" rows="2"
-                                    cols="5"></textarea>
+                                <select id="form17" name="cat2" class="form-control">
+                                    <option>Select Category</option>
+                                    {{#each category}}
+                                    <option value="{{shortDescription}}"> {{ shortDescription }} </option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Applied to all Stores
+                        </label>
                     </div>
                     <div class="container" style="padding: 50px;">
                         <div class="row">

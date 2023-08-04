@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement : true
         },
+        outletId : {
+            type : DataTypes.BIGINT(20),
+            allowNull : false,
+        },
         itemId : {
             type : DataTypes.BIGINT(20),
             allowNull : false,

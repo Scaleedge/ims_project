@@ -4,7 +4,7 @@ const { sequelize, user } = require(".");
 module.exports = (sequelize, DataTypes) => {
     
     const Category = sequelize.define('category_master', {
-        id: {
+        categoryId: {
             type: DataTypes.BIGINT(20),
             allowNull: false,
             primaryKey: true,

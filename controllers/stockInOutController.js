@@ -4,8 +4,38 @@ const ProductStock = db.productStock
 
 
 const stockInOut = async (req, res) => {
-
+    console.log(req.body.type)
     try {
+
+        const product = await ProductStock.findOne({ where: { itemId: req.body.itemId } })
+
+        if (!product) {
+            return res.status(500).send({
+                success: false,
+                message: "Product is not found in Product Stock"
+            })
+        }
+
+        const store = await ProductStock.findOne({ where: { outletId: req.body.outletId } })
+
+
+        if (!store) {
+            return res.status(500).send({
+                success: false,
+                message: "Store is not found in Product Stock"
+            })
+        }
+
+        const productStock = await ProductStock.findOne({ where: { itemid: req.body.itemId, outletId: req.body.outletId } })
+       
+            if (req.body.type = 'in') {
+              
+                const addproductStock = await ProductStock.update({ stock: productStock.stock + 1 }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
+
+            }
+
+            const removeProductStock = await ProductStock.update({ stock: productStock.stock - 1 }, { where: { itemId: req.body.itemId } })
+
 
         const info = {
             itemId: req.body.itemId,
@@ -15,26 +45,6 @@ const stockInOut = async (req, res) => {
             remarks: req.body.remarks
         }
 
-
-        const productStock = await ProductStock.findOne({ where: { itemId: req.body.itemId  }})
-       
-
-        if(!productStock) {
-            return res.status(500).send({
-                success: false,
-                message: "ProductStock is not found"
-            })
-        }
-
-        if (req.body.inOutFlag == "in") {
-
-            const addproductStock = await ProductStock.update( { freeQty : productStock.freeQty + 1 }, {where : {itemId : req.body.itemId}} )
-            
-        }
-
-        const removeProductStock = await ProductStock.update({ freeQty : productStock.freeQty - 1 }, {where : {itemId : req.body.itemId}})
-        
-
         const stockInOut = await StockInOut.create(info)
         req.flash('message', 'Stock added sucessfully');
         return res.redirect('/stockInOut')
@@ -42,11 +52,10 @@ const stockInOut = async (req, res) => {
     }
 
     catch (err) {
+        console.log(err.message)
         res.status(500).send({
             success: false,
-            // message: "something went wrong",
-            message: err.message
-
+            message: "something went wrong",
         })
         console.log(err)
     }

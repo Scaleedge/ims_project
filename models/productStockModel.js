@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         others : {
             type : DataTypes.TEXT,
-            // allowNull: false,
+            
         },
         recommended : {
             type : DataTypes.STRING(20)

@@ -3,7 +3,7 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
     const Product = sequelize.define('products', {
-        id: {
+        itemId: {
             type: DataTypes.BIGINT(20),
             allowNull: false,
             primaryKey: true,
@@ -91,8 +91,8 @@ module.exports = (sequelize, DataTypes) => {
         iBarU : {
             type : DataTypes.STRING(255)
         },
-        manufacturer : {
-            type : DataTypes.STRING(250)
+        manufacturerId : {
+            type: DataTypes.BIGINT(20),  
         },
         pageN : {
             type : DataTypes.INTEGER(11)

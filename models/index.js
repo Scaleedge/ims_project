@@ -34,8 +34,8 @@ db.category = require('./categoryMasterModel')(sequelize, DataTypes)
 db.productCategoryMapping = require('./productCategoryMappingModel')(sequelize, DataTypes)
 
 // db.products.belongsTo(db.store, { sourceKey: "outletId", foreignKey: "outletId" });
-db.productStock.belongsTo(db.products, { sourceKey: "id", foreignKey: "itemId" });
-db.productStock.belongsTo(db.store, { sourceKey: "id", foreignKey: "outletId" });
+db.productStock.belongsTo(db.products, { sourceKey: "itemId", foreignKey: "itemId" });
+db.productStock.belongsTo(db.store, { sourceKey: "outletId", foreignKey: "outletId" });
 // db.products.hasOne(db.productStock, { sourceKey: "id", foreignKey: "itemId" });s
 
 

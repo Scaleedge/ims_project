@@ -4,7 +4,7 @@ const { sequelize, user } = require(".");
 module.exports = (sequelize, DataTypes) => {
     
     const Manufacturer = sequelize.define('manufacturer_master', {
-        id: {
+        manufacturerId: {
             type: DataTypes.BIGINT(20),
             allowNull: false,
             primaryKey: true,

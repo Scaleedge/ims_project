@@ -58,7 +58,8 @@
                                 <th scope="col ">MRP</th>
                                 <th scope="col ">Category 1</th>
                                 <th scope="col ">Category 2</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Category Edit</th>
+                                <th scope="col">Rate Edit</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -117,7 +118,7 @@
             'serverSide' : true,
             'serverMethod' : 'get',
             'ajax' : {
-                'url' : '/productsList'
+                'url' : '/productsDetailsList'
     },
             'aaSorting' : [],
             'columns' : [
@@ -129,9 +130,15 @@
             {data : 'Cat1' },
             {data : 'Cat2' },
            {
-               data: "itemName",
+               data: "categoryId",
             'render': function (data, type, row) {
-                    return "<a href='Admin/Categories/Edit/" + data + "'>EDIT</a>";
+                    return "<a href='/updateCategory/" + data + "'>EDIT</a>";
+               }
+            },
+            {
+               data: "id",
+            'render': function (data, type, row) {
+                    return "<a href='/updateProductRaise" + data + "'>EDIT</a>";
                }
             }
 

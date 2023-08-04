@@ -5,14 +5,14 @@ const ProductStock = db.productStock;
 
 
 const addProductRaise = async (req,res) => {
-
+    
     try {
 
         const productStock = await ProductStock.findOne({ where: { itemId: req.body.itemId  }})
        
 
         if(!productStock) {
-            res.status(500).send({
+            return res.status(500).send({
                 success: false,
                 message: "ProductStock is not found"
             })

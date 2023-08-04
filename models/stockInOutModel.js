@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         type : {
             type : DataTypes.STRING,
-            defaultValue : "in"
         },
         qty : {
             type : DataTypes.STRING,

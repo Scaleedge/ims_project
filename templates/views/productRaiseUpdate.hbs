@@ -33,7 +33,7 @@
           <select class="form-control" name="itemId" id="exampleFormControlSelect1">
             <option>Select Product</option>
             {{#each product}}
-            <option value="{{itemId}}"> {{ itemName }} </option>
+            <option value="{{id}}"> {{ itemName }} </option>
             {{/each}}
           </select>
         </div>
@@ -45,12 +45,6 @@
           <label for="exampleFormControlTextarea1">Price</label>
           <textarea class="form-control" name="price" id="exampleFormControlTextarea1" rows="2"></textarea>
         </div>
-        <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-  <label class="form-check-label" for="flexCheckDefault">
-    Applied to all Stores
-  </label>
-</div>
         <div class="button-container">
           <button class="button-34" type="submit" role="button">Update</button>
           <button class="button-34" type="reset" role="button">Cancel</button>
