@@ -48,7 +48,7 @@ const stockInOut = async (req, res) => {
         }
 
         const stockInOut = await StockInOut.create(info)
-        req.flash('message', 'Stock added sucessfully');
+        req.flash('message', 'Stock updated sucessfully');
         return res.redirect('/stockInOut')
 
     }
