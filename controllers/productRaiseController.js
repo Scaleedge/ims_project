@@ -38,7 +38,7 @@ const addProductRaise = async (req, res) => {
         const addProductRaise = await ProductRaise.create(info)
 
         req.flash('message', 'MRP and Price Added.');
-        return res.redirect('/productRaise')
+        return res.redirect('/productDetailsList')
 
     }
 

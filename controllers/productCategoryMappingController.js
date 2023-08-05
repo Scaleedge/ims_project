@@ -63,7 +63,7 @@ const productCategoryMapping = async (req, res) => {
 
             req.flash('message', 'Product added into productStock sucessfully');
         }
-        return res.redirect('/productCategoryMapping')
+        return res.redirect('/productDetailsList')
     }
     catch (err) {
         console.log(err.message)
