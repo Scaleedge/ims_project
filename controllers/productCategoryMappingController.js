@@ -18,6 +18,7 @@ const productCategoryMapping = async (req, res) => {
         if (productStock) {
             const stockUpdated = await ProductStock.update({ Cat1: req.body.cat1, Cat2: req.body.cat2 }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
         }
+        else{
             console.log(123)
             const info = {
                 itemId,
@@ -65,6 +66,8 @@ const productCategoryMapping = async (req, res) => {
     
             console.log(addInProductStock)
             req.flash('message', 'Product added into productStock sucessfully');
+        }
+           
         
        
         return res.redirect('/productCategoryMapping')
