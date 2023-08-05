@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         itemId: {
             type: DataTypes.BIGINT(20),
-            unique :true,
         },
         outletId : {
             type : DataTypes.BIGINT(11),

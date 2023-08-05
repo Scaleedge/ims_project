@@ -1,25 +1,22 @@
 const db = require("../models")
-const Product = db.products
-const Store = db.store
 const ProductStock = db.productStock
-// const ProductCategoryMapping = db.productCategoryMapping
 
-// Create Product
+// Add Category product and store wise and create productAtock
+
 const productCategoryMapping = async (req, res) => {
 
     try {
 
-        // const store = await Store.findOne({ where: { outletId: req.body.outletId } })
+        if(req.body.store_selection == 'applied_to_all'){
+            const sameCategoryForAllStore = await ProductStock.update({ Cat1: req.body.cat1, Cat2: req.body.cat2 }, { where: { itemId: req.body.itemId } })
+        }
 
-        // const product = await Product.findOne({ where: { itemId: req.body.itemId} })
-        const productStock = await ProductStock.findOne({ where: { itemId: req.body.itemId , outletId: req.body.outletId } })
-        
+        const productStock = await ProductStock.findOne({ where: { itemId: req.body.itemId, outletId: req.body.outletId } })
 
         if (productStock) {
-            const stockUpdated = await ProductStock.update({ Cat1: req.body.cat1, Cat2: req.body.cat2 }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
+            await ProductStock.update({ Cat1: req.body.cat1, Cat2: req.body.cat2 }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
         }
-        else{
-            console.log(123)
+        else {
             const info = {
                 itemId,
                 outletId,
@@ -30,8 +27,8 @@ const productCategoryMapping = async (req, res) => {
                 salePrice,
                 taxPercentage,
                 itemReferenceCode,
-                Cat1: req.body.cat1,
-                Cat2: req.body.cat2,
+                Cat1,
+                Cat2,
                 Cat3,
                 Cat4,
                 Cat5,
@@ -61,15 +58,11 @@ const productCategoryMapping = async (req, res) => {
                 flatOffer,
                 aliasCode
             } = req.body
-    
+
             const addInProductStock = await ProductStock.create(info)
-    
-            console.log(addInProductStock)
+
             req.flash('message', 'Product added into productStock sucessfully');
         }
-           
-        
-       
         return res.redirect('/productCategoryMapping')
     }
     catch (err) {
@@ -78,9 +71,7 @@ const productCategoryMapping = async (req, res) => {
             success: false,
             message: "something went wrong"
         })
-
     }
-
 }
 
 
