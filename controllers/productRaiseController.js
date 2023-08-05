@@ -8,6 +8,13 @@ const addProductRaise = async (req, res) => {
 
     try {
 
+
+        if(req.body.store_selection == 'applied_to_all'){
+            console.log(123)
+            const sameProductPriceForAllStore = await ProductStock.update({ mrp: req.body.mrp, salePrice: req.body.price }, { where: { itemId: req.body.itemId} })
+        }
+
+
         const productStock = await ProductStock.findOne({ where: { itemId: req.body.itemId, outletId: req.body.outletId } })
 
 
