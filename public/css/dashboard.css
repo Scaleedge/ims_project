@@ -3,7 +3,7 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #4723D9;
+    --first-color: black;
     --first-color-light: #AFA5D9;
     --white-color: #F7F6FB;
     --body-font: 'Nunito', sans-serif;
@@ -239,6 +239,7 @@ body {
     color: #f48fb1;
 }
 
+
 .active-pink-textarea.md-form textarea.md-textarea:focus:not([readonly])+label {
     color: #f48fb1;
 }
@@ -257,7 +258,7 @@ body {
 }
 
 .active-pink-textarea-2 textarea.md-textarea {
-    border-bottom: 1px solid #0329e6;
+    border-bottom: 1px solid black;
     font-weight: 700;
     box-shadow: 0 1px 0 0 black;
 }
@@ -267,10 +268,10 @@ body {
 }
 
 .active-pink-textarea-2.md-form label {
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 0.2px;
-    color: #0329e6;
+    font-weight: 500;
+    font-size: 16px;
+
+    color: black;
 }
 
 .active-pink-textarea-2.md-form textarea.md-textarea:focus:not([readonly])+label {
@@ -319,12 +320,33 @@ body {
     display: flex;
     justify-content: center;
     flex-direction: column;
+  
 }
 
 .col-name a {
     margin: 5px 0px;
     margin-bottom: 24px;
     color: lightgray;
+  
+   
+}
+
+.nav_list::-webkit-scrollbar{
+    width: 10px;
+}
+
+.nav_list::-webkit-scrollbar-thumb{
+    background: blue;
+    border-radius: 10px;
+}
+
+
+
+
+
+.nav_list{
+    max-height: 100vh;
+    overflow-y: scroll;
 }
 
 .col-name a:hover {
@@ -422,3 +444,38 @@ body {
         width: 50%;
     }
 }
+
+
+
+.button-31 {
+    background-color: #222;
+    border-radius: 4px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Farfetch Basis","Helvetica Neue",Arial,sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin: 0;
+    max-width: none;
+    min-height: 44px;
+    min-width: 10px;
+    outline: none;
+    overflow: hidden;
+    padding: 9px 20px 8px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+  }
+  
+  .button-31:hover,
+  .button-31:focus {
+    opacity: .75;
+  }

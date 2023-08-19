@@ -99,7 +99,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDeleted : {
             type : DataTypes.BOOLEAN,
-            default : false
+            defaultValue : false
+        },
+        approve_b : {
+            type : DataTypes.STRING,
+        },
+        approve_by : {
+            type : DataTypes.STRING,
+        },
+        approve_date : {
+            type : DataTypes.DATE,
         }
     })
 

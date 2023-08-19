@@ -18,6 +18,15 @@ module.exports = (sequelize, DataTypes) => {
             type : DataTypes.TEXT,
             
         },
+        approve_b : {
+            type : DataTypes.STRING,
+        },
+        approve_by : {
+            type : DataTypes.STRING,
+        },
+        approve_date : {
+            type : DataTypes.DATE,
+        }
     
     })
 

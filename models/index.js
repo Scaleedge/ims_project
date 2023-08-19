@@ -32,12 +32,16 @@ db.stockInOut = require('./stockInOutModel')(sequelize, DataTypes)
 db.manufacturer = require('./manufacturerMasterModel')(sequelize, DataTypes)
 db.category = require('./categoryMasterModel')(sequelize, DataTypes)
 db.productCategoryMapping = require('./productCategoryMappingModel')(sequelize, DataTypes)
+db.userStoreMapping = require('./userStoreMapping')(sequelize, DataTypes)
+
 
 // db.products.belongsTo(db.store, { sourceKey: "outletId", foreignKey: "outletId" });
 db.productStock.belongsTo(db.products, { sourceKey: "itemId", foreignKey: "itemId" });
 db.productStock.belongsTo(db.store, { sourceKey: "outletId", foreignKey: "outletId" });
+db.products.belongsTo(db.manufacturer, { sourceKey: "manufacturerId", foreignKey: "manufacturerId" } )
 // db.products.hasOne(db.productStock, { sourceKey: "id", foreignKey: "itemId" });s
-
+db.user.belongsToMany(db.store, { through: db.userStoreMapping, foreignKey: 'userFk', as: 'selectedStores' });
+db.store.belongsToMany(db.user, { through: db.userStoreMapping, foreignKey: 'storeFk' });
 
 
 db.sequelize.sync({ force: false })

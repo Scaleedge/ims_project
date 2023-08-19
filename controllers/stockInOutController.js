@@ -34,7 +34,7 @@ const stockInOut = async (req, res) => {
             const addproductStock = await ProductStock.update({ stock: productStock.stock + qty }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
 
         } else if (req.body.type == 'out') {
-            
+
             const removeProductStock = await ProductStock.update({ stock: productStock.stock - qty }, { where: { itemId: req.body.itemId, outletId: req.body.outletId } })
 
         }
@@ -44,7 +44,10 @@ const stockInOut = async (req, res) => {
             outletId: req.body.outletId,
             type: req.body.type,
             qty: req.body.qty,
-            remarks: req.body.remarks
+            remarks: req.body.remarks,
+            approve_b: req.body.approve_b,
+            approve_by: req.body.approve_by,
+            approve_date: approve_date
         }
 
         const stockInOut = await StockInOut.create(info)
@@ -63,6 +66,57 @@ const stockInOut = async (req, res) => {
     }
 
 }
+
+
+// Stock In/Out Approval Listing
+
+const stockInOutApprovalList = async function (req, res) {
+    console.log(123)
+    const approvalStatus = req.query.approvalStatus; // Get the approval status from query parameter
+
+    let whereClause = {};
+
+    if (approvalStatus === 'pending') {
+        whereClause = { approve_b: null };
+    } else if (approvalStatus === 'approved') {
+        whereClause = { approve_b: "approved" };
+    } else if (approvalStatus === 'rejected') {
+        whereClause = { approve_b: "rejected" };
+    }
+
+    const stockInOut = await StockInOut.findAll({ where: whereClause });
+
+    res.render('approval/stockInOutApprovalList', { title: 'Express', message: req.flash('message'), stockInOut });
+}
+
+const updateStockInOutApprovalStatus = async (req, res) => {
+    console.log(456)
+    const { action, selectedItemIds } = req.body;
+    if (action === 'approved' || action === 'rejected') {
+        console.log(selectedItemIds)
+        selectedItemIds.forEach(async itemId => {
+            try {
+                // Find the category by ID using Sequelize
+                const stockInOut = await StockInOut.findByPk(itemId);
+                console.log(stockInOut.approve_b)
+                console.log(action)
+                if (stockInOut) {
+                    // Update the approval status of the category
+                    await StockInOut.update({ approve_b: action }, { where: { itemId: itemId } });
+                }
+            } catch (error) {
+                console.error('Error updating category:', error);
+            }
+        });
+    }
+}
+
+
+
+
+
 module.exports = {
-    stockInOut
+    stockInOut,
+    stockInOutApprovalList,
+    updateStockInOutApprovalStatus
 }

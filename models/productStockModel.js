@@ -127,6 +127,15 @@ module.exports = (sequelize, DataTypes) => {
         aliasCode : {
             type : DataTypes.STRING(150)
         },
+        approve_b : {
+            type : DataTypes.STRING,
+        },
+        approve_by : {
+            type : DataTypes.STRING,
+        },
+        approve_date : {
+            type : DataTypes.DATE,
+        }
     })
 
     return ProductStock

@@ -25,10 +25,14 @@ module.exports = (sequelize, DataTypes) => {
             type : DataTypes.STRING(20),
             allowNull : false
         },
+        managerFk : {
+            type : DataTypes.BIGINT(20),
+            defaultValue : -1
+        },
         role : {
             type : DataTypes.STRING,
-            default : "user"
-        }
+            defaultValue : 'user'
+        },
     })
 
     return User

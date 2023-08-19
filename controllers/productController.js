@@ -4,7 +4,6 @@ const fs = require('fs');
 
 // Create Product
 const createProduct = async (req, res) => {
-console.log(req.body.manufacturerId)
     try {
         if (req.file) {
             const tmp_path = req.file.path;
@@ -51,7 +50,11 @@ console.log(req.body.manufacturerId)
             iBarU: req.body.iBarU,
             manufacturerId: req.body.manufacturerId,
             pageN: req.body.pageN,
-            isDeleted: req.body.isDeleted
+            isDeleted: req.body.isDeleted,
+            approve_b:req.body.approve_b,
+            approve_by:req.body.approve_by,
+            approve_date:req.body.approve_date
+
         }
 
         // const productStock = await productStock.create()
@@ -70,35 +73,35 @@ console.log(req.body.manufacturerId)
 }
 
 
-// Get All Product Details
-const getAllProduct = async (req, res) => {
-    const page = req.query.page ? req.query.page : 1
-    const size = req.query.size ? req.query.size : 3
-    const products = await Product.findAndCountAll({
-        limit: size,
-        offset: (page - 1) * size
-    })
+// // Get All Product Details
+// const getAllProduct = async (req, res) => {
+//     const page = req.query.page ? req.query.page : 1
+//     const size = req.query.size ? req.query.size : 3
+//     const products = await Product.findAndCountAll({
+//         limit: size,
+//         offset: (page - 1) * size
+//     })
 
-    return res.status(200).send({
-        success: true,
-        products
-    })
-}
+//     return res.status(200).send({
+//         success: true,
+//         products
+//     })
+// }
 
-// Get Single Product Details
-const getSingleProduct = async (req, res) => {
-    const product = await Product.findOne({ where: { id: req.params.id } })
-    if (!product) {
-        res.status(200).send({
-            success: false,
-            message: "Product Not Found"
-        })
-    }
-    res.status(200).send({
-        success: true,
-        product
-    })
-}
+// // Get Single Product Details
+// const getSingleProduct = async (req, res) => {
+//     const product = await Product.findOne({ where: { id: req.params.id } })
+//     if (!product) {
+//         res.status(200).send({
+//             success: false,
+//             message: "Product Not Found"
+//         })
+//     }
+//     res.status(200).send({
+//         success: true,
+//         product
+//     })
+// }
 
 // Update Product Details
 const updateProduct = async (req, res) => {
@@ -142,28 +145,70 @@ const updateProduct = async (req, res) => {
 
 }
 
-// Delete Product Details
-const deleteProduct = async (req, res) => {
-    const product = await Product.destroy({ where: { id: req.params.id } })
-    if (!product) {
-        res.status(200).send({
-            success: false,
-            message: "Product Not Found"
-        })
+// // Delete Product Details
+// const deleteProduct = async (req, res) => {
+//     const product = await Product.destroy({ where: { id: req.params.id } })
+//     if (!product) {
+//         res.status(200).send({
+//             success: false,
+//             message: "Product Not Found"
+//         })
+//     }
+//     res.status(200).send({
+//         message: "Product Deleted Sucessfully"
+//     })
+// }
+
+const productApprovalList = async function (req, res) {
+
+    const approvalStatus = req.query.approvalStatus; // Get the approval status from query parameter
+    
+    let whereClause = {};
+    
+    if (approvalStatus === 'pending') {
+      whereClause = { approve_b: null };
+    } else if (approvalStatus === 'approved') {
+      whereClause = { approve_b: "approved" };
+    } else if (approvalStatus === 'rejected') {
+      whereClause = { approve_b: "rejected" };
     }
-    res.status(200).send({
-        message: "Product Deleted Sucessfully"
-    })
+    
+    const product = await Product.findAll({ where: whereClause });
+    
+    res.render('approval/productApprovalList', { title: 'Express', message: req.flash('message'),product });
 }
 
+const updateProductApprovalStatus =  async (req, res) => {
 
+    const { action, selectedProductIds } = req.body;
+    if (action === 'approved' || action === 'rejected') {
+      console.log(selectedProductIds)
+      selectedProductIds.forEach(async itemId => {
+        try {
+          // Find the category by ID using Sequelize
+          const product = await Product.findByPk(itemId);
+          console.log(product.approve_b)
+          console.log(action)
+          if (product) {
+            // Update the approval status of the category
+            await Product.update({ approve_b : action }, { where : {itemId : itemId}});
+          }
+        } catch (error) {
+          console.error('Error updating category:', error);
+        }
+      });
+    }
+    }
 
 
 module.exports = {
     updateProduct,
     createProduct,
-    getAllProduct,
-    getSingleProduct,
+    // getAllProduct,
+    // getSingleProduct,
     updateProduct,
-    deleteProduct
+    // deleteProduct
+    productApprovalList,
+    updateProductApprovalStatus
+
 }

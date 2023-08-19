@@ -9,7 +9,7 @@ const session = require('express-session');
 
 const registerUser = async (req , res) => {
   
-    const {firstName, lastName, email, mobileNumber} = req.body
+    const {firstName, lastName, email, mobileNumber,manager} = req.body
     if (!firstName || !lastName || !email || !mobileNumber) {
       return res.status(500).send({
          success : false,
@@ -33,6 +33,8 @@ const registerUser = async (req , res) => {
         password : bcrypt.hashSync(req.body.password, 8),
         mobileNumber
       });
+
+      req.session.user = user
       console.log("user registered sucessfully")
       req.flash('message', 'You are now Register Sucessfully.');
       return res.redirect('/')
@@ -85,12 +87,77 @@ const loginUser = async (req, res) => {
       req.session.isLoggedIn = true
       req.session.userDetail = {
         id: user.id,
+        role:user.role
       }
       req.flash('message', 'You are now login Sucessfully.');
       res.redirect('/dashboard')
 }
 
+// Create User
+
+const createUser = async (req , res) => {
+  console.log(123)
+try{
+
+  const {firstName, lastName, email, mobileNumber, role} = req.body
+  if (!firstName || !lastName || !email || !mobileNumber || role) {
+    return res.status(500).send({
+       success : false,
+       message : "All fields must have values"})
+  }
+
+  const isEmailAvailable = await User.findOne({
+    where : {email : email}
+  })
+
+  if (isEmailAvailable) {
+    return res.status(500).send({
+      success : false,
+      message : "Email already exist"})
+  }
+
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      password : bcrypt.hashSync(req.body.password, 8),
+      mobileNumber,
+      role
+    });
+console.log(user)
+    // req.session.user = user
+    console.log("user registered sucessfully")
+    req.flash('message', 'You are now Register Sucessfully.');
+    return res.redirect('/')
+}catch(err){
+  console.log(err)
+  res.status(500).send({
+    success : false,
+    message : err
+  })
+
+}
+
+  
+ 
+  
+}
+
+const updateUser = async (req , res) => {
+  console.log(456)
+  console.log(req.params.id)
+
+  const user = await User.update(req.body, { where : { id : req.params.id }})
+ 
+    // req.session.user = user
+    console.log("user updated sucessfully")
+    req.flash('message', 'You are now Register Sucessfully.');
+    return res.redirect('/userList')
+  
+}
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    createUser,
+    updateUser
 }

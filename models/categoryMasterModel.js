@@ -15,9 +15,17 @@ module.exports = (sequelize, DataTypes) => {
             
         },
         longDescription : {
-            type : DataTypes.TEXT,
-           
+            type : DataTypes.TEXT,  
         },
+        approve_b : {
+            type : DataTypes.STRING,
+        },
+        approve_by : {
+            type : DataTypes.STRING,
+        },
+        approve_date : {
+            type : DataTypes.DATE,
+        }
     
     })
 

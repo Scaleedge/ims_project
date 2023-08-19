@@ -57,6 +57,9 @@ const productCategoryMapping = async (req, res) => {
                 pack: req.body.pack,
                 flatOffer: req.body.flatOffer,
                 aliasCode: req.body.aliasCode,
+                approve_b:req.body.approve_b,
+                approve_by:req.body.approve_by,
+                approve_date:approve_date
             }
 
             const addInProductStock = await ProductStock.create(info)
@@ -74,9 +77,52 @@ const productCategoryMapping = async (req, res) => {
     }
 }
 
+// Product Category Mapping Approval Listing
 
+const proCatMapApprovalList = async function (req, res) {
+
+    const approvalStatus = req.query.approvalStatus; // Get the approval status from query parameter
+    
+    let whereClause = {};
+    
+    if (approvalStatus === 'pending') {
+      whereClause = { approve_b: null };
+    } else if (approvalStatus === 'approved') {
+      whereClause = { approve_b: "approved" };
+    } else if (approvalStatus === 'rejected') {
+      whereClause = { approve_b: "rejected" };
+    }
+    
+    const productStock = await ProductStock.findAll({ where: whereClause });
+    
+    res.render('approval/proCatMapApprovalList', { title: 'Express', message: req.flash('message'),productStock });
+}
+
+const updateProCatMapApprovalStatus =  async (req, res) => {
+
+    const { action, selectedItemIds } = req.body;
+    if (action === 'approved' || action === 'rejected') {
+      console.log(selectedItemIds)
+      selectedItemIds.forEach(async itemId => {
+        try {
+          // Find the category by ID using Sequelize
+          const productStock = await ProductStock.findByPk(itemId);
+          console.log(productStock.approve_b)
+          console.log(action)
+          if (productStock) {
+            // Update the approval status of the category
+            await ProductStock.update({ approve_b : action }, { where : {itemId : itemId}});
+          }
+        } catch (error) {
+          console.error('Error updating category:', error);
+        }
+      });
+    }
+    }
 module.exports = {
-    productCategoryMapping
+    productCategoryMapping,
+    proCatMapApprovalList,
+    updateProCatMapApprovalStatus
 }
 
 

@@ -32,7 +32,10 @@ const addProductRaise = async (req, res) => {
             itemId: req.body.itemId,
             outletId: req.body.outletId,
             mrp: req.body.mrp,
-            price: req.body.price
+            price: req.body.price,
+            approve_b:req.body.approve_b,
+            approve_by:req.body.approve_by,
+            approve_date:req.body.approve_date
         }
 
         const addProductRaise = await ProductRaise.create(info)
@@ -83,7 +86,54 @@ const updateProductRaise = async (req, res) => {
 
 }
 
+
+
+// Product Rate Approval Listing
+
+const productRaiseApprovalList = async function (req, res) {
+console.log(123)
+    const approvalStatus = req.query.approvalStatus; // Get the approval status from query parameter
+    
+    let whereClause = {};
+    
+    if (approvalStatus === 'pending') {
+      whereClause = { approve_b: null };
+    } else if (approvalStatus === 'approved') {
+      whereClause = { approve_b: "approved" };
+    } else if (approvalStatus === 'rejected') {
+      whereClause = { approve_b: "rejected" };
+    }
+    
+    const productRaise = await ProductRaise.findAll({ where: whereClause });
+    
+    res.render('approval/productRaiseApprovalList', { title: 'Express', message: req.flash('message'),productRaise });
+}
+
+const updateProductRaiseApprovalStatus =  async (req, res) => {
+console.log(456)
+    const { action, selectedItemIds } = req.body;
+    if (action === 'approved' || action === 'rejected') {
+      console.log(selectedItemIds)
+      selectedItemIds.forEach(async itemId => {
+        try {
+          // Find the category by ID using Sequelize
+          const productRaise = await ProductRaise.findByPk(itemId);
+          console.log(productRaise.approve_b)
+          console.log(action)
+          if (productRaise) {
+            // Update the approval status of the category
+            await ProductRaise.update({ approve_b : action }, { where : {itemId : itemId}});
+          }
+        } catch (error) {
+          console.error('Error updating category:', error);
+        }
+      });
+    }
+    }
+
 module.exports = {
     addProductRaise,
-    updateProductRaise
+    updateProductRaise,
+    productRaiseApprovalList,
+    updateProductRaiseApprovalStatus
 }

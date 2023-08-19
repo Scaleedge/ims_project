@@ -6,18 +6,23 @@ const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
 const storeController = require("../controllers/storeController")
 const productStockController = require('../controllers/productStockController')
+const productRaiseController = require("../controllers/productRaiseController")
 const stockInOutController = require("../controllers/stockInOutController")
 const manufacturerController = require("../controllers/manufacturerController")
 const categoryController = require("../controllers/categoryMasterController")
 const productRaise = require('../controllers/productRaiseController');
 const productCategoryMapping = require('../controllers/productCategoryMappingController')
+const userStoreMapping = require("../controllers/userStoreMappingController")
 const checkUser = require("../middleware/checkUser")
+// const checkRole = require("../middleware/checkRole")
 const db = require("../models");
 const Store = db.store
 const Product = db.products
 const Manufacturer = db.manufacturer
 const Category = db.category
 const ProductStock = db.productStock
+const User = db.user
+const UserStoreMapping = db.userStoreMapping
 let multer = require('multer');
 const database = require('../config/database');
 const upload = multer({ dest: 'public/' })
@@ -59,8 +64,6 @@ router.get('/logout', function (req, res) {
 
 
 
-
-
 // Dashboard Api
 
 router.get('/dashboard', checkUser, function (req, res) {
@@ -68,28 +71,28 @@ router.get('/dashboard', checkUser, function (req, res) {
 });
 
 
+// Create User Api
 
-
-
-// Create Product Api
-
-router.get('/product', checkUser, async function (req, res) {
-  const manufacturer = await Manufacturer.findAll()
-  res.render('product', { title: 'Express', message: req.flash('message'), manufacturer });
+router.get('/user', async function (req, res) {
+  const user = await User.findAll()
+  res.render('user/user', { title: 'Express', message: req.flash('message'),user });
 });
 
-router.post('/createProduct', upload.single('imageUrl'), productController.createProduct)
+router.post('/createUser', userController.createUser)
 
 
 
-// Product Deatail Listing Api
+// User Listing Api
 
-router.get('/productDetailsList', checkUser, async function (req, res) {
-  res.render('productDetailsList', { title: 'Express', message: req.flash('message')});
+router.get('/userList', function (req, res) {
+  
+  res.render('user/userList', { title: 'Express', message: req.flash('message') });
 });
 
-router.get('/productsDetailsList', checkUser, async function (req, res) {
- 
+
+router.get('/userMasterList',  async function (req, res) {
+  
+
   let draw = req.query.draw;
 
   let start = parseInt(req.query.start);
@@ -99,8 +102,109 @@ router.get('/productsDetailsList', checkUser, async function (req, res) {
   let where = {}
 
 
+  if (req.query.search.value) {
+    console.log(req.query.search.value)
+    where[Op.or] = [
+      { id: { [Op.like]: `%${req.query.search.value}%` } },
+      { firstname: { [Op.like]: `%${req.query.search.value}%` } },
+      { lastname: { [Op.like]: `%${req.query.search.value}%` } },
+      { email: { [Op.like]: `%${req.query.search.value}%` } },
+      { mobileNumber: { [Op.like]: `%${req.query.search.value}%` } },
+    ];
+  }
+
+  const user = await User.findAll({
+    limit: length,
+    offset: start,
+    where: where
+  })
+  const count = await User.count()
+
+  let data_arr = []
+  for (let i = 0; i < user.length; i++) {
+    data_arr.push({
+      'id': user[i].id,
+      'firstName': user[i].firstName,
+      'lastName': user[i].lastName,
+      'email': user[i].email,
+      'password' :user[i].password,
+      'mobileNumber': user[i].mobileNumber
+    });
+  }
+  let output = {
+    'draw': draw,
+    'iTotalRecords': count,
+    'iTotalDisplayRecords': count,
+    'aaData': data_arr
+  };
+  res.json(output)
+})
+
+
+
+// Update User Api
+
+
+router.get('/userUpdate/:id', async function (req, res) {
+  console.log(123)
+  const user = await User.findOne( { where : { id : req.params.id}})
+  res.render('user/userUpdate', { title: 'Express', message: req.flash('message') , user});
+});
+
+router.post('/updateUser/:id', userController.updateUser)
+
+
+
+// User Store Mapping Api
+
+router.get('/userStoreMapping', async function (req, res) {
+  const user = await User.findAll();
+  const store = await Store.findAll()
+  res.render('userStoreMapping', { title: 'Express', message: req.flash('message'),user,store });
+});
+
+router.post('/userStoreMapping', userStoreMapping.addUserStoreMapping)
+
+router.get('/getSelectedStores/:userId', userStoreMapping.getUserStoreData)
+
+// router.post('/deselectStore/:userId/:outletId', userStoreMapping.deselectStore)
+
+
+
+// Create Product Api
+
+router.get('/product', checkUser, async function (req, res) {
+  const manufacturer = await Manufacturer.findAll()
+  res.render('product/product', { title: 'Express', message: req.flash('message'), manufacturer });
+});
+
+router.post('/createProduct', upload.single('imageUrl'), productController.createProduct)
+
+
+
+// Product Deatail Listing Api
+
+router.get('/productDetailsList', checkUser, async function (req, res) {
+  res.render('product/productDetailsList', { title: 'Express', message: req.flash('message')});
+});
+
+router.get('/productsDetailsList', checkUser, async function (req, res) {
+  let draw = req.query.draw;
+  let start = parseInt(req.query.start);
+  let length = parseInt(req.query.length);
+  let where = {}; // Define the where object for filtering
+
+  if (req.query.search.value) {
+    where[Op.or] = [
+      { '$product.itemName$': { [Op.like]: `%${req.query.search.value}%` } },
+      { '$store_master.storeName$': { [Op.like]: `%${req.query.search.value}%` } },
+      { Cat1: { [Op.like]: `%${req.query.search.value}%` } },
+      { Cat2: { [Op.like]: `%${req.query.search.value}%` } },
+    ];
+  }
+
   const productStock = await ProductStock.findAll({
-    include: [ 
+    include: [
       {
         model: Product,
         // attributes:['itemName']
@@ -109,48 +213,35 @@ router.get('/productsDetailsList', checkUser, async function (req, res) {
         model: Store,
         // attributes:['storeName']
       },
-
     ],
     limit: length,
     offset: start,
-    where: where
-  })
-  console.log(productStock)
+    where: where, // Apply the filtering
+  });
 
-  if (req.query.search.value) {
-    where[Op.or] = [
-      { itemName: { [Op.like]: `%${req.query.search.value}%` } },
-      { storeName: { [Op.like]: `%${req.query.search.value}%` } },
-      { Cat1: { [Op.like]: `%${req.query.search.value}%` } },
-      { Cat2: { [Op.like]: `%${req.query.search.value}%` } },
-    ];
-  }
+  const count = await ProductStock.count();
 
-  
-  const count = await ProductStock.count()
-  
-
-  let data_arr = []
-  for (let i = 0; i <productStock.length; i++) {
+  let data_arr = [];
+  for (let i = 0; i < productStock.length; i++) {
     data_arr.push({
-      'itemName' : productStock[i].product.itemName,
-      'storeName': productStock[i].store_master.storeName,
-      'stock': productStock[i].stock,
-      'salePrice': productStock[i].salePrice,
-      'mrp': productStock[i].mrp,
-      'Cat1': productStock[i].Cat1,
-      'Cat2': productStock[i].Cat2
+      itemName: productStock[i].product.itemName,
+      storeName: productStock[i].store_master.storeName,
+      stock: productStock[i].stock,
+      salePrice: productStock[i].salePrice,
+      mrp: productStock[i].mrp,
+      Cat1: productStock[i].Cat1,
+      Cat2: productStock[i].Cat2,
     });
   }
-  
+
   let output = {
-    'draw': draw,
-    'iTotalRecords': count,
-    'iTotalDisplayRecords': count,
-    'aaData': data_arr
+    draw: draw,
+    iTotalRecords: count,
+    iTotalDisplayRecords: count,
+    aaData: data_arr,
   };
 
-  res.json(output)
+  res.json(output);
 });
 
 
@@ -159,7 +250,7 @@ router.get('/productsDetailsList', checkUser, async function (req, res) {
 // Product Master Listing Api
 
 router.get('/productMasterList', checkUser, async function (req, res) {
-  res.render('productMasterList', { title: 'Express', message: req.flash('message')});
+  res.render('product/productMasterList', { title: 'Express', message: req.flash('message')});
 });
 
 router.get('/productsMasterList', checkUser, async function (req, res) {
@@ -215,11 +306,12 @@ router.get('/productsMasterList', checkUser, async function (req, res) {
 
 // Product Update Api
 router.get('/updateProduct/:id', checkUser, async function (req, res) {
-  console.log(123)
-  let id = req.params.id
+
   const product = await Product.findOne({where:{itemId:req.params.id}})
+
   const manufacturer = await Manufacturer.findAll()
-  res.render('productUpdate', { title: 'Express', message: req.flash('message'), manufacturer, product });
+
+  res.render('product/productUpdate', { title: 'Express', message: req.flash('message'), manufacturer, product });
 });
 
 router.post('/updateProduct/:id', upload.single('imageUrl'), productController.updateProduct)
@@ -251,7 +343,7 @@ router.post('/productCategoryMapping', productCategoryMapping.productCategoryMap
 // Store Master Api
 
 router.get('/storeMaster', checkUser, function (req, res) {
-  res.render('storeMaster', { title: 'Express', message: req.flash('message') });
+  res.render('store/storeMaster', { title: 'Express', message: req.flash('message') });
 });
 
 router.post("/createStore", storeController.createStore);
@@ -261,7 +353,7 @@ router.post("/createStore", storeController.createStore);
 // Store List Api
 
 router.get('/storeList', checkUser, async function (req, res) {
-  res.render('storeMasterList', { title: 'Express', message: req.flash('message') });   
+  res.render('store/storeMasterList', { title: 'Express', message: req.flash('message') });   
 })
 
 router.get('/storemasterList',  async function (req, res) {
@@ -315,7 +407,7 @@ router.get('/updateStoreMaster/:id', checkUser, async function (req, res) {
   console.log(req.params.id)
   let store = await Store.findOne({where:{outletId :  req.params.id}})
   console.log(store)
-  res.render('storeMasterUpdate', { title: 'Express', message: req.flash('message'),store });
+  res.render('store/storeMasterUpdate', { title: 'Express', message: req.flash('message'),store });
 });
 
 router.post("/updateStore/:id", storeController.updateStore);
@@ -329,7 +421,7 @@ router.get('/productRaise', checkUser, async function (req, res) {
 
   const product = await Product.findAll()
 
-  res.render('productRaise', { title: 'Express', message: req.flash('message'), store, product });
+  res.render('productRaise/productRaise', { title: 'Express', message: req.flash('message'), store, product });
 });
 
 router.post('/productRaise', productRaise.addProductRaise)
@@ -346,7 +438,7 @@ console.log(req.params.itemId)
 
   const productStock = await ProductStock.findOne({ where : { itemId :  req.params.id } })
 
-  res.render('productRaiseUpdate', { title: 'Express', message: req.flash('message'), store, product,productStock });
+  res.render('productRaise/productRaiseUpdate', { title: 'Express', message: req.flash('message'), store, product,productStock });
 });
 
 router.post('/productRaise', productRaise.updateProductRaise)
@@ -370,18 +462,24 @@ router.post('/stockInOut', stockInOutController.stockInOut)
 // Manufacturer Master Api
 
 router.get('/manufacturer', checkUser, function (req, res) {
-  res.render('manufacturer', { title: 'Express', message: req.flash('message') });
+  res.render('manufacturer/manufacturer', { title: 'Express', message: req.flash('message') });
 });
 
 router.post('/addManufacturer', manufacturerController.addManufacturer)
 
+
+// Manufacturer approval Api
+
+router.get('/admin/manufacturer/approvalList', manufacturerController.adminView)
+
+router.post('/admin/approval/:manufacturerId', manufacturerController.adminApprove)
 
 
 
 // Manufacturer Listing Api
 
 router.get('/manufacturerList', checkUser, function (req, res) {
-  res.render('manufacturerList', { title: 'Express', message: req.flash('message') });
+  res.render('manufacturer/manufacturerList', { title: 'Express', message: req.flash('message') });
 });
 
 router.get('/manufacturerMasterList',  async function (req, res) {
@@ -436,7 +534,7 @@ router.get('/manufacturerMasterList',  async function (req, res) {
 
 router.get('/updateManufacturer/:id', checkUser, async function (req, res) {
   const manufacturer = await Manufacturer.findOne({ where  : { manufacturerId : req.params.id } } )
-  res.render('manufacturerUpdate', { title: 'Express', message: req.flash('message'),manufacturer });
+  res.render('manufacturer/manufacturerUpdate', { title: 'Express', message: req.flash('message'),manufacturer });
 });
 
 router.post('/updateManufacturer/:id', manufacturerController.updateManufacturer)
@@ -445,18 +543,16 @@ router.post('/updateManufacturer/:id', manufacturerController.updateManufacturer
 // Category Master Api
 
 router.get('/category', checkUser, function (req, res) {
-  res.render('category', { title: 'Express', message: req.flash('message') });
+  res.render('category/category', { title: 'Express', message: req.flash('message') });
 });
 
 router.post('/addcategory', categoryController.addCategory)
 
 
-
-
 // Category Listing Api
 
 router.get('/categoryList', checkUser, function (req, res) {
-  res.render('categoryList', { title: 'Express', message: req.flash('message') });
+  res.render('category/categoryList', { title: 'Express', message: req.flash('message') });
 });
 
 router.get('/categoryMasterList',  async function (req, res) {
@@ -514,10 +610,62 @@ router.get('/updateCategory/:id', checkUser, async function (req, res) {
   console.log(req.params.categoryId)
   console.log(req.params.id)
   const category = await Category.findOne({ where : { categoryId : req.params.id } } )
-  res.render('categoryUpdate', { title: 'Express', message: req.flash('message'),category });
+  res.render('category/categoryUpdate', { title: 'Express', message: req.flash('message'),category });
 });
 
 router.post('/updateCategory/:id', categoryController.updateCategory)
+
+
+
+// Category Approval List
+
+router.get('/categoryApprovalList', categoryController.categoryApprovalList);
+
+router.post('/updateCategoryApprovalStatus',categoryController.updateCategoryApprovalStatus)
+
+// Manufacturer Approval List
+
+router.get('/manufacturerApprovalList', manufacturerController.manufacturerApprovalList);
+
+router.post('/updateManufacturerApprovalStatus',manufacturerController.updateManufacturerApprovalStatus)
+
+// Store Approval List
+
+router.get('/storeApprovalList', storeController.storeApprovalList);
+
+router.post('/updateStoreApprovalStatus',storeController.updateStoreApprovalStatus)
+
+// Product Approval List
+
+router.get('/productApprovalList', productController.productApprovalList);
+
+router.post('/updateProductApprovalStatus',productController.updateProductApprovalStatus)
+
+// Product Category Mapping Approval List
+
+router.get('/proCatMapApprovalList', productCategoryMapping.proCatMapApprovalList);
+
+router.post('/updateProCatMapApprovalStatus',productCategoryMapping.updateProCatMapApprovalStatus)
+
+// Product Rate Approval List
+
+router.get('/productRaiseApprovalList', productRaiseController.productRaiseApprovalList);
+
+router.post('/updateProductRaiseApprovalStatus',productRaiseController.updateProductRaiseApprovalStatus)
+
+
+// Stock In/Out Approval List
+
+router.get('/stockInOutApprovalList', stockInOutController.stockInOutApprovalList);
+
+router.post('/updateStockInOutApprovalStatus',stockInOutController.updateStockInOutApprovalStatus)
+
+// User Store Management Approval List
+
+router.get('/userStoreMappingApprovalList', userStoreMapping.userStoreMappingApprovalList);
+
+router.post('/updateUserStoreMappingApprovalStatus',userStoreMapping.updateUserStoreMappingApprovalStatus)
+
 
 
 module.exports = router;

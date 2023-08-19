@@ -29,6 +29,17 @@ hbs.registerHelper('ifEquals', function (arg1, arg2, options) {
   return arg1 === arg2 ? options.fn(this) : options.inverse(this);
 });
 
+// hbs.registerHelper('isSelectedStore', function(selectedStores, storeId) {
+//   console.log("here")
+//   console.log(selectedStores,storeId)
+//   return selectedStores.includes(storeId);
+// });
+hbs.registerHelper('isEqual', function (value1, value2, options) {
+  return value1 === value2 ? options.fn(this) : options.inverse(this);
+});
+
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());

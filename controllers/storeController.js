@@ -9,7 +9,10 @@ const createStore = async (req, res) => {
         let info = {
             outletId,
             storeName,
-            storeAddress
+            storeAddress,
+            approve_b,
+            approve_by,
+            approve_date
         } = req.body
 
         const store = await Store.create(info)
@@ -68,8 +71,55 @@ console.log(123)
 }
 
 
+//   store Approval List
+
+const storeApprovalList = async function (req, res) {
+    
+    const approvalStatus = req.query.approvalStatus; // Get the approval status from query parameter
+    
+    let whereClause = {};
+    
+    if (approvalStatus === 'pending') {
+      whereClause = { approve_b: null };
+    } else if (approvalStatus === 'approved') {
+      whereClause = { approve_b: "approved" };
+    } else if (approvalStatus === 'rejected') {
+      whereClause = { approve_b: "rejected" };
+    }
+    
+    const store = await Store.findAll({ where: whereClause });
+    
+    res.render('approval/storeApprovalList', { title: 'Express', message: req.flash('message'),store });
+}
+
+const updateStoreApprovalStatus =  async (req, res) => {
+console.log(123)
+    const { action, selectedStoreIds } = req.body;
+    if (action === 'approved' || action === 'rejected') {
+    //   console.log(selectedstoreIds)
+      selectedStoreIds.forEach(async outletId => {
+        try {
+          // Find the category by ID using Sequelize
+          const store = await Store.findByPk(outletId);
+        //   console.log(category.approve_b)
+        //   console.log(action)
+          if (store) {
+            // Update the approval status of the category
+            await Store.update({ approve_b : action }, { where : {outletId : outletId}});
+          }
+        } catch (error) {
+          console.error('Error updating category:', error);
+        }
+      });
+    }
+    }
+
+
+
 module.exports = {
     createStore,
     getAllStoreDetails,
-    updateStore
+    updateStore,
+    storeApprovalList,
+    updateStoreApprovalStatus
 }

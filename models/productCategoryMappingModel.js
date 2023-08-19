@@ -24,6 +24,15 @@ module.exports = (sequelize, DataTypes) => {
         cat2 : {
             type : DataTypes.STRING(255),
         },
+        approve_b : {
+            type : DataTypes.STRING,
+        },
+        approve_by : {
+            type : DataTypes.STRING,
+        },
+        approve_date : {
+            type : DataTypes.DATE,
+        }
     
     })
 

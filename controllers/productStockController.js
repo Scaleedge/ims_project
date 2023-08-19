@@ -55,6 +55,9 @@ const addProductStock = async (req, res) => {
             pack: req.body.pack,
             flatOffer: req.body.flatOffer,
             aliasCode: req.body.aliasCode,
+            approve_b:req.body.approve_b,
+            approve_by:req.body.approve_by,
+            approve_date:approve_date
         }
         const productStock = await ProductStock.create(info)
         return res.status(200).send({
