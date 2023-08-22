@@ -100,7 +100,7 @@ const createUser = async (req , res) => {
 try{
 
   const {firstName, lastName, email, mobileNumber, role} = req.body
-  if (!firstName || !lastName || !email || !mobileNumber || role) {
+  if (!firstName || !lastName || !email || !mobileNumber) {
     return res.status(500).send({
        success : false,
        message : "All fields must have values"})
@@ -128,7 +128,7 @@ console.log(user)
     // req.session.user = user
     console.log("user registered sucessfully")
     req.flash('message', 'You are now Register Sucessfully.');
-    return res.redirect('/')
+    return res.redirect('/userList')
 }catch(err){
   console.log(err)
   res.status(500).send({

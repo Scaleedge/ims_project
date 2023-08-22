@@ -1,6 +1,9 @@
 const db = require("../models")
 const Product = db.products
 const fs = require('fs');
+const xlsx = require('xlsx');
+
+
 
 // Create Product
 const createProduct = async (req, res) => {
@@ -51,9 +54,9 @@ const createProduct = async (req, res) => {
             manufacturerId: req.body.manufacturerId,
             pageN: req.body.pageN,
             isDeleted: req.body.isDeleted,
-            approve_b:req.body.approve_b,
-            approve_by:req.body.approve_by,
-            approve_date:req.body.approve_date
+            approve_b: req.body.approve_b,
+            approve_by: req.body.approve_by,
+            approve_date: req.body.approve_date
 
         }
 
@@ -122,7 +125,7 @@ const updateProduct = async (req, res) => {
             src.on('error', function (err) { });
         }
 
-        const product = await Product.update( { ...req.body, imageUrl: req.body.newFileName }, { where: { itemId: req.params.id } })
+        const product = await Product.update({ ...req.body, imageUrl: req.body.newFileName }, { where: { itemId: req.params.id } })
 
         if (!product) {
             res.status(200).send({
@@ -162,43 +165,76 @@ const updateProduct = async (req, res) => {
 const productApprovalList = async function (req, res) {
 
     const approvalStatus = req.query.approvalStatus; // Get the approval status from query parameter
-    
+
     let whereClause = {};
-    
+
     if (approvalStatus === 'pending') {
-      whereClause = { approve_b: null };
+        whereClause = { approve_b: null };
     } else if (approvalStatus === 'approved') {
-      whereClause = { approve_b: "approved" };
+        whereClause = { approve_b: "approved" };
     } else if (approvalStatus === 'rejected') {
-      whereClause = { approve_b: "rejected" };
+        whereClause = { approve_b: "rejected" };
     }
-    
+
     const product = await Product.findAll({ where: whereClause });
-    
-    res.render('approval/productApprovalList', { title: 'Express', message: req.flash('message'),product });
+
+    res.render('approval/productApprovalList', { title: 'Express', message: req.flash('message'), product });
 }
 
-const updateProductApprovalStatus =  async (req, res) => {
+const updateProductApprovalStatus = async (req, res) => {
 
     const { action, selectedProductIds } = req.body;
     if (action === 'approved' || action === 'rejected') {
-      console.log(selectedProductIds)
-      selectedProductIds.forEach(async itemId => {
-        try {
-          // Find the category by ID using Sequelize
-          const product = await Product.findByPk(itemId);
-          console.log(product.approve_b)
-          console.log(action)
-          if (product) {
-            // Update the approval status of the category
-            await Product.update({ approve_b : action }, { where : {itemId : itemId}});
-          }
-        } catch (error) {
-          console.error('Error updating category:', error);
-        }
-      });
+        console.log(selectedProductIds)
+        selectedProductIds.forEach(async itemId => {
+            try {
+                // Find the category by ID using Sequelize
+                const product = await Product.findByPk(itemId);
+                console.log(product.approve_b)
+                console.log(action)
+                if (product) {
+                    // Update the approval status of the category
+                    await Product.update({ approve_b: action }, { where: { itemId: itemId } });
+                }
+            } catch (error) {
+                console.error('Error updating category:', error);
+            }
+        });
     }
+}
+
+
+// upload bulk products
+
+const uploadBulkProducts = async function (req, res) {
+ console.log(12345678)
+// console.log(req.file)
+    try {
+        if (req.file) {
+        // get the file path
+        const filePath = req.file.path;
+
+        // read the file content
+        const fileData = fs.readFileSync(filePath)
+        const workbook = xlsx.read(fileData, { type: 'buffer' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const productsInJson = xlsx.utils.sheet_to_json(sheet);
+
+        const bulkProducts = await Product.bulkCreate(productsInJson)
+console.log(bulkProducts)
+        req.flash('message', 'Products Sucessfully Uploaded.');
+        return res.redirect('/productMasterList')
     }
+}
+    catch (err) {
+        console.log(err.message)
+        res.status(500).send({
+            success: false,
+            message: "something went wrong"
+        })
+    }
+}
+
 
 
 module.exports = {
@@ -209,6 +245,7 @@ module.exports = {
     updateProduct,
     // deleteProduct
     productApprovalList,
-    updateProductApprovalStatus
+    updateProductApprovalStatus,
+    uploadBulkProducts
 
 }

@@ -3,20 +3,14 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
     const OrderItems = sequelize.define('orderItems', {
-        order_item_id: {
+        id: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement : true
         },
-        orderid: {
+        orderPK : {
             type: DataTypes.INTEGER(11),
-            allowNull: false,
-        },
-        rowNo: {
-            type: DataTypes.STRING(250),
-        },
-        id : {
-            type : DataTypes.STRING(250),
         },
         itemId : {
             type : DataTypes.STRING(250)
@@ -24,6 +18,20 @@ module.exports = (sequelize, DataTypes) => {
         itemName : {
             type : DataTypes.STRING(250)
         },
+        outletId : {
+            type : DataTypes.STRING(250)
+        },
+        storeName : {
+            type : DataTypes.STRING(250)
+        },
+        rowNo: {
+            type: DataTypes.STRING(250),
+        },
+        // id : {
+        //     type : DataTypes.STRING(250),
+        // },
+
+       
         itemReferenceCode : {
             type : DataTypes.STRING(250)
         },
@@ -60,17 +68,8 @@ module.exports = (sequelize, DataTypes) => {
         freeQty : {
             type : DataTypes.STRING(250)
         },
-        orderPK : {
-            type : DataTypes.STRING(250)
-        },
         aggregatorPaid : {
             type : DataTypes.STRING(250)
-        },
-        created_at : {
-            type : DataTypes.DATE
-        },
-        updated_at : {
-            type : DataTypes.DATE
         },
     })
 

@@ -3,25 +3,44 @@ const { sequelize } = require(".");
 
 module.exports = (sequelize, DataTypes) => {
     const Order = sequelize.define('orders', {
-        id: {
+        orderId: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement : true
         },
-        orderPK: {
-            type: DataTypes.STRING(250),
+        // orderPK: {
+        //     type: DataTypes.STRING(250),
+        // },
+        customerName : {
+            type : DataTypes.STRING(250)
+        },
+        customerMobile : {
+            type : DataTypes.STRING(250)
+        },
+        customerEmail : {
+            type : DataTypes.STRING(250)
+        },
+        customerCity : {
+            type : DataTypes.STRING(250)
+        },
+        customerState : {
+            type : DataTypes.STRING(250)
+        },
+        customerPinCode : {
+            type : DataTypes.STRING(250)
+        },
+        paymentMode : {
+            type : DataTypes.STRING(250)
+        },
+        outletId : {
+            type : DataTypes.STRING(250)
         },
         onlineReferenceNo: {
             type: DataTypes.STRING(250),
         },
         onlineChildReferenceNo : {
             type : DataTypes.STRING(250),
-        },
-        createdAt : {
-            type : DataTypes.STRING(250)
-        },
-        updatedAt : {
-            type : DataTypes.STRING(250)
         },
         status : {
             type : DataTypes.STRING(250)
@@ -40,9 +59,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         totalAmount : {
             type : DataTypes.STRING(255)
-        },
-        paymentMode : {
-            type : DataTypes.STRING(250)
         },
         totalTaxAmount : {
             type : DataTypes.STRING(250)
@@ -149,9 +165,7 @@ module.exports = (sequelize, DataTypes) => {
         customerId : {
             type : DataTypes.STRING(250)
         },
-        customerName : {
-            type : DataTypes.STRING(250)
-        },
+       
         customerType : {
             type : DataTypes.STRING(250)
         },
@@ -167,31 +181,13 @@ module.exports = (sequelize, DataTypes) => {
         customerArea : {
             type : DataTypes.STRING(250)
         },
-        customerCity : {
-            type : DataTypes.STRING(250)
-        },
-        customerState : {
-            type : DataTypes.STRING(250)
-        },
         customerCountry : {
-            type : DataTypes.STRING(250)
-        },
-        customerPinCode : {
             type : DataTypes.STRING(250)
         },
         customerPhone : {
             type : DataTypes.STRING(250)
         },
-        customerMobile : {
-            type : DataTypes.STRING(250)
-        },
-        customerEmail : {
-            type : DataTypes.STRING(250)
-        },
         ordTimestamp : {
-            type : DataTypes.STRING(250)
-        },
-        outletId : {
             type : DataTypes.STRING(250)
         },
         isOfflineOrder : {
@@ -217,12 +213,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         serviceTaxAmount : {
             type : DataTypes.STRING(250)
-        },
-        created_at : {
-            type : DataTypes.DATE
-        },
-        updated_at : {
-            type : DataTypes.DATE
         },
     })
 

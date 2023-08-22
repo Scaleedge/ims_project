@@ -13,6 +13,7 @@ const categoryController = require("../controllers/categoryMasterController")
 const productRaise = require('../controllers/productRaiseController');
 const productCategoryMapping = require('../controllers/productCategoryMappingController')
 const userStoreMapping = require("../controllers/userStoreMappingController")
+const orderController = require("../controllers/orderController")
 const checkUser = require("../middleware/checkUser")
 // const checkRole = require("../middleware/checkRole")
 const db = require("../models");
@@ -23,9 +24,21 @@ const Category = db.category
 const ProductStock = db.productStock
 const User = db.user
 const UserStoreMapping = db.userStoreMapping
+const Order = db.order;
+const OrderItems = db.orderItems
 let multer = require('multer');
-const database = require('../config/database');
 const upload = multer({ dest: 'public/' })
+const bulkUpload = multer({ dest: 'public/' })
+// Set up Multer storage
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/excel'); // Set the destination folder for uploaded files
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + '-' + file.originalname); // Set the filename for the uploaded file
+//   }
+// });
+// const excel = multer({ storage: storage });
 
 
 
@@ -218,7 +231,7 @@ router.get('/productsDetailsList', checkUser, async function (req, res) {
     offset: start,
     where: where, // Apply the filtering
   });
-
+// console.log(productStock)
   const count = await ProductStock.count();
 
   let data_arr = [];
@@ -667,5 +680,86 @@ router.get('/userStoreMappingApprovalList', userStoreMapping.userStoreMappingApp
 router.post('/updateUserStoreMappingApprovalStatus',userStoreMapping.updateUserStoreMappingApprovalStatus)
 
 
+// Order Billing Api
+
+router.get('/order', async function (req, res) {
+  const store = await Store.findAll()
+  const product = await Product.findAll()
+  res.render('order', { title: 'Express', message: req.flash('message'), store, product});
+});
+
+router.post('/order',orderController.createOrderBill)
+
+
+//order listing
+
+router.get('/orderList', async function (req, res) {
+console.log(123)
+  res.render('orderList', { title: 'Express', message: req.flash('message')});
+});
+
+
+router.get('/orderDetailsList', async function (req, res) {
+  console.log(456)
+   let draw = req.query.draw;
+ 
+   let start = parseInt(req.query.start);
+ 
+   let length = parseInt(req.query.length);
+ 
+   let where = {}
+ 
+ 
+   const order = await Order.findAll({
+     include: [ 
+       {
+         model: OrderItems,
+       },
+     ],
+     limit: length,
+     offset: start,
+     where: where
+   })
+ console.log(req.query.search.value)
+   if (req.query.search.value) {
+     console.log(123456789)
+     where[Op.or] = [
+       { orderId: { [Op.like]: `%${req.query.search.value}%` } },
+       // { customerName: { [Op.like]: `%${req.query.search.value}%` } },
+       // { '$orderItem.storeName$': { [Op.like]: `%${req.query.search.value}%` } },
+     ];
+   }
+   
+   const count = await Order.count()
+ 
+ 
+   let data_arr = []
+   for (let i = 0; i <order.length; i++) {
+     data_arr.push({
+       'orderId' : order[i].orderId,
+       'customerName' : order[i].customerName,
+       'storeName': order[i].orderItem.storeName,
+       'totalAmount': order[i].totalAmount,
+       'createdAt': order[i].createdAt,
+     });
+   }
+   
+   let output = {
+     'draw': draw,
+     'iTotalRecords': count,
+     'iTotalDisplayRecords': count,
+     'aaData': data_arr
+   };
+ 
+   res.json(output)
+ });
+
+// Upload Bulk Products
+
+ router.get('/uploadBulkProducts', function(req,res){
+  res.render('product/uploadBulkProduct', {title:'express', message: req.flash('message')})
+ })
+
+ router.post('/uploadBulkProducts', bulkUpload.single('file'), productController.uploadBulkProducts)
 
 module.exports = router;

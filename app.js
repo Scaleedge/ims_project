@@ -20,6 +20,7 @@ const templatespath = path.join(__dirname,"./templates/views");
 const partialpath = path.join(__dirname,"./templates/partials");
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(staticpath));
+
 app.set("view engine","hbs");
 app.set("views", templatespath);
 hbs.registerPartials(partialpath);
